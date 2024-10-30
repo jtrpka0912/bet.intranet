@@ -10,8 +10,15 @@
     # pkgs.python311Packages.pip
     # pkgs.nodejs_20
     # pkgs.nodePackages.nodemon
-    pkgs.postgresql
+    pkgs.docker
   ];
+
+  services = {
+    docker = {
+      enable = true;
+    };
+  };
+
   # Sets environment variables in the workspace
   env = {};
   idx = {

@@ -1,8 +1,12 @@
-import Fastify, { FastifyInstance } from 'fastify';
+import {Client} from 'pg';
+import FastifyServer from './server';
 
-const server: FastifyInstance = Fastify({});
+const postgresClient: Client = new Client({
+    user: 'postgres',
+    password: 'password'
+});
 
-server.get('/', async () => {
+FastifyServer.get('/', async () => {
     return {
         hello: 'world'
     };
@@ -15,12 +19,25 @@ server.get('/', async () => {
  * @author J. Trpka
  */
 const start = async () => {
+    console.info('INFO: Initializing Server');
     try {
-        await server.listen({
+        console.info('INFO: Connecting to Database');
+        await postgresClient.connect();
+
+        console.info('INFO: Running Server on Port 3000');
+        await FastifyServer.listen({
             port: 3000
         });
+
+        postgresClient.on('error', (err) => {
+            throw new Error(err.message);
+        });
+
+        console.info('INFO: Disconnecting Database');
+        await postgresClient.end();
     } catch (err) {
-        server.log.error(err);
+        FastifyServer.log.error(err);
+        console.error('ERROR: ', err);
         process.exit(1);
     }
 }
