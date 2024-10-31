@@ -1,5 +1,6 @@
 export type BetResponseDTO = {
     id: string,
+    stipulation: string,
     jeremyAnswer: string,
     hidemiAnswer: string,
     jeremyBets: string,

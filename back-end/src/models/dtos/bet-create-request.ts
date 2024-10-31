@@ -1,4 +1,4 @@
-export type BetRequestDTO = {
+export type BetCreateRequestDTO = {
     stipulation: string,
     jeremyAnswer: string,
     hidemiAnswer: string,
