@@ -1,5 +1,6 @@
 import { BetCreateRequestDTO } from "./dtos/bet-create-request";
 import { BetResponseDTO } from "./dtos/bet-response";
+import { GeneratedQuery } from "./generated-query";
 
 export class Bet {
     private _id?: string;
@@ -119,6 +120,105 @@ export class Bet {
      */
     didCompleted = (): boolean => {
         return !!this._completedAt;
+    }
+
+    /**
+     * @function generateQuery
+     * @description Generate the data needed for a write SQL query
+     * @author J. Trpka
+     * @returns {GeneratedQuery}
+     */
+    generateQuery = (): GeneratedQuery => {
+        if(this.canModify()) {
+            return this.updateQuery();
+        } else {
+            return this.insertQuery();
+        }
+    }
+
+    /**
+     * @private
+     * @function insertQuery
+     * @description Generate the data for an Insert SQL query
+     * @author J. Trpka
+     * @returns {GeneratedQuery}
+     */
+    private insertQuery = (): GeneratedQuery => {
+        // TODO: Generate a UUID
+
+        return {
+            query: `
+                INSERT INTO bets (
+                    id,
+                    stipulation,
+                    jeremy_answer,
+                    hidemi_answer,
+                    jeremy_bets,
+                    hidemi_bets,
+                    jeremy_won,
+                    hidemi_won,
+                    bet_ends_at,
+                    completed_at,
+                    created_at,
+                    updated_at
+                ) VALUES (
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+                )
+            `,
+            values: [
+                '215bd5fc-d6ad-4dbf-9669-9c5edbc33278',
+                this._stipulation,
+                this._jeremy.answer,
+                this._hidemi.answer,
+                this._jeremy.bets,
+                this._hidemi.bets,
+                this._jeremy.didWon ? 'true' : 'false',
+                this._hidemi.didWon ? 'true' : 'false',
+                this._betEndsAt.toISOString(),
+                this._completedAt.toISOString(),
+                new Date().toISOString(),
+                new Date().toISOString()
+            ]
+        };
+    }
+
+    /**
+     * @private
+     * @function updateQuery
+     * @description Generate the data for an Update SQL query
+     * @author J. Trpka
+     * @returns {GeneratedQuery}
+     */
+    private updateQuery = (): GeneratedQuery => {
+        return {
+            query: `
+                UPDATE bets SET
+                    stipulation = $1,
+                    jeremy_answer = $2,
+                    hidemi_answer = $3,
+                    jeremy_bets = $4,
+                    hidemi_bets = $5,
+                    jeremy_won = $6,
+                    hidemi_won = $7,
+                    bet_ends_at = $8,
+                    completed_at = $9,
+                    updated_at = $10,
+                WHERE id = $11
+            `,
+            values: [
+                this._stipulation,
+                this._jeremy.answer,
+                this._hidemi.answer,
+                this._jeremy.bets,
+                this._hidemi.bets,
+                this._jeremy.didWon ? 'true' : 'false',
+                this._hidemi.didWon ? 'true' : 'false',
+                this._betEndsAt.toISOString(),
+                this._completedAt.toISOString(),
+                new Date().toISOString(),
+                this._id
+            ]
+        }
     }
 }
 
