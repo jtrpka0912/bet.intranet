@@ -1,4 +1,4 @@
-export type BetResponseDTO = {
+type BetResponseDTO = {
     id: string,
     stipulation: string,
     jeremyAnswer: string,
@@ -10,3 +10,5 @@ export type BetResponseDTO = {
     betEndsAt: string,
     completedAt: string
 }
+
+export default BetResponseDTO;

@@ -1,5 +1,5 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
-import { ResponseDTO } from "../models/dtos/response";
+import { FastifyInstance, FastifyRequest } from "fastify"
+import { createBet } from "../controllers/bets";
 
 /**
  * @async
@@ -9,15 +9,7 @@ import { ResponseDTO } from "../models/dtos/response";
  * @param {FastifyInstance} fastify
  */
 const routes = async (fastify: FastifyInstance) => {
-    fastify.post('/', async(request: FastifyRequest): Promise<ResponseDTO<string>> => {
-        console.info(request.body);
-
-        return {
-            error: false,
-            message: null,
-            data: 'Hello World'
-        }
-    });
+    fastify.post('/', createBet);
 }
 
 export default routes;

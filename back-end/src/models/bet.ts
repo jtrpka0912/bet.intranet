@@ -1,8 +1,12 @@
-import { BetCreateRequestDTO } from "./dtos/bet-create-request";
-import { BetResponseDTO } from "./dtos/bet-response";
-import { GeneratedQuery } from "./generated-query";
+import BetCreateRequestDTO from "./dtos/bet-create-request";
+import BetResponseDTO from "./dtos/bet-response";
+import GeneratedQuery from "./generated-query";
 
-export class Bet {
+/**
+ * @class
+ * @name Bet
+ */
+class Bet {
     private _id?: string;
     private _stipulation: string;
     private _jeremy: Better;
@@ -254,3 +258,5 @@ class Better {
         return this._didWon;
     }
 }
+
+export default Bet;

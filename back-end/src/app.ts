@@ -1,15 +1,7 @@
-import FastifyServer from './server';
-import PostgresClient from './postgres';
+import FastifyServer, { postgresClientPlugin } from './server';
 import BettingRoutes from './routes/bets';
 
-require('dotenv').config({
-    path: '../.env'
-});
-
-const dbClient = new PostgresClient(
-    process.env.POSTGRES_USER, 
-    process.env.POSTGRES_PASSWORD
-);
+FastifyServer.register(postgresClientPlugin);
 
 FastifyServer.register(BettingRoutes, {
     prefix: '/v1/bets'
@@ -24,15 +16,16 @@ FastifyServer.register(BettingRoutes, {
 const start = async () => {
     try {
         console.info('INFO: Initializing Server');
+        if(!FastifyServer.dbClient) throw new Error('Database client not attached to server');
 
-        await dbClient.connect();
+        await FastifyServer.dbClient.connect();
 
         FastifyServer.addHook('onClose', async () => {
-            await dbClient.disconnect();
+            await FastifyServer.dbClient.disconnect();
         });
 
         console.info('INFO: Initializing Database Table');
-        await dbClient.initTable();
+        await FastifyServer.dbClient.initTable();
 
         console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT}`);
         FastifyServer.listen({
@@ -46,7 +39,7 @@ const start = async () => {
 
         // Close the instances
         await FastifyServer.close();
-        await dbClient.disconnect();
+        await FastifyServer.dbClient.disconnect();
         process.exit(1);
     }
 }
