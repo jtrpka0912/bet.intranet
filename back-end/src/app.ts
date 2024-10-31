@@ -32,6 +32,9 @@ const start = async () => {
             await dbClient.disconnect();
         });
 
+        console.info('INFO: Initializing Database Table');
+        await dbClient.initTable();
+
         console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT}`);
         FastifyServer.listen({
             port: parseInt(process.env.SERVER_PORT)
