@@ -1,4 +1,4 @@
-import {Client} from 'pg';
+import {Client, QueryResult} from 'pg';
 
 /**
  * @class
@@ -7,6 +7,12 @@ import {Client} from 'pg';
  * @author J. Trpka
  */
 class PostgresClient {
+    private _user: string;
+    private _password: string;
+
+    private _schemaName: string = 'bets';
+    private _tableName: string = 'bets';
+
     private _client: Client;
 
     /**
@@ -17,6 +23,9 @@ class PostgresClient {
      * @param {string} password 
      */
     constructor(user: string, password: string) {
+        this._user = user;
+        this._password = password;
+
         this._client = new Client({
             user,
             password
@@ -28,6 +37,7 @@ class PostgresClient {
     }
 
     /**
+     * @public
      * @async
      * @function connect
      * @description Connect to a Postgres database
@@ -39,6 +49,7 @@ class PostgresClient {
     }
 
     /**
+     * @public
      * @async
      * @function disconnect
      * @description Disconnect from the Postgres database
@@ -47,6 +58,19 @@ class PostgresClient {
     disconnect = async () => {
         console.info('INFO: Disconnecting Database');
         this._client.end();
+    }
+
+    /**
+     * @private
+     * @function query
+     * @description Run a query with the query string and (if any) values
+     * @author J. Trpka
+     * @param {string} query 
+     * @param {string[] | null} values 
+     * @returns {Promise<QueryResult>}
+     */
+    private query = async (query: string, values?: string[]): Promise<QueryResult> => {
+        return this._client.query(query, values);
     }
 }
 
