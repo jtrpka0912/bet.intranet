@@ -1,5 +1,6 @@
 import FastifyServer from './server';
 import PostgresClient from './postgres';
+import BettingRoutes from './routes/bets';
 
 require('dotenv').config({
     path: '../.env'
@@ -10,10 +11,8 @@ const dbClient = new PostgresClient(
     process.env.POSTGRES_PASSWORD
 );
 
-FastifyServer.get('/', async () => {
-    return {
-        hello: 'world'
-    };
+FastifyServer.register(BettingRoutes, {
+    prefix: '/v1/bets'
 });
 
 /**
