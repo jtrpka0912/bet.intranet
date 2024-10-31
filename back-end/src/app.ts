@@ -1,10 +1,14 @@
-import {Client} from 'pg';
 import FastifyServer from './server';
+import PostgresClient from './postgres';
 
-const postgresClient: Client = new Client({
-    user: 'postgres',
-    password: 'password'
+require('dotenv').config({
+    path: '../.env'
 });
+
+const postgresClient = PostgresClient(
+    process.env.POSTGRES_USER, 
+    process.env.POSTGRES_PASSWORD
+);
 
 FastifyServer.get('/', async () => {
     return {
