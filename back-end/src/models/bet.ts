@@ -144,8 +144,6 @@ export class Bet {
      * @returns {GeneratedQuery}
      */
     private insertQuery = (): GeneratedQuery => {
-        // TODO: Generate a UUID
-
         return {
             query: `
                 INSERT INTO bets (
@@ -166,7 +164,7 @@ export class Bet {
                 )
             `,
             values: [
-                '215bd5fc-d6ad-4dbf-9669-9c5edbc33278',
+                crypto.randomUUID(),
                 this._stipulation,
                 this._jeremy.answer,
                 this._hidemi.answer,
