@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
 import { ResponseDTO } from "../models/dtos/response";
 
 /**
+ * @async
  * @function routes
  * @description All of the bet endpoint routes
  * @author J. Trpka
