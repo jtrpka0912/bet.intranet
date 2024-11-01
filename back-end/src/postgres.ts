@@ -1,5 +1,9 @@
 import {Client, QueryResult} from 'pg';
 
+require('dotenv').config({
+    path: '../.env'
+});
+
 /**
  * @class
  * @name PostgresClient
@@ -7,8 +11,6 @@ import {Client, QueryResult} from 'pg';
  * @author J. Trpka
  */
 class PostgresClient {
-    private _user: string;
-    private _password: string;
     private _tableName: string = 'bets';
 
     private _client: Client;
@@ -17,16 +19,11 @@ class PostgresClient {
      * @constructor
      * @description Initialize the Postgres client
      * @author J. Trpka
-     * @param {string} user 
-     * @param {string} password 
      */
-    constructor(user: string, password: string) {
-        this._user = user;
-        this._password = password;
-
+    constructor() {
         this._client = new Client({
-            user,
-            password
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_PASSWORD
         });
     }
 
@@ -43,7 +40,7 @@ class PostgresClient {
      */
     connect = async () => {
         console.info('INFO: Connecting to Database');
-        this._client.connect()
+        await this._client.connect()
     }
 
     /**
@@ -55,7 +52,7 @@ class PostgresClient {
      */
     disconnect = async () => {
         console.info('INFO: Disconnecting Database');
-        this._client.end();
+        await this._client.end();
     }
 
     initTable = async () => {

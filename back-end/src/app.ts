@@ -1,9 +1,12 @@
-import FastifyServer, { postgresClientPlugin } from './server';
+import fastify, { FastifyInstance } from 'fastify';
 import BettingRoutes from './routes/bets';
+import postgresClientPlugin from './plugins/postgres-client';
 
-FastifyServer.register(postgresClientPlugin);
+const server: FastifyInstance = fastify();
 
-FastifyServer.register(BettingRoutes, {
+server.register(postgresClientPlugin);
+
+server.register(BettingRoutes, {
     prefix: '/v1/bets'
 });
 
@@ -14,32 +17,21 @@ FastifyServer.register(BettingRoutes, {
  * @author J. Trpka
  */
 const start = async () => {
+    console.info('INFO: Initializing Server');
+
     try {
-        console.info('INFO: Initializing Server');
-        if(!FastifyServer.dbClient) throw new Error('Database client not attached to server');
-
-        await FastifyServer.dbClient.connect();
-
-        FastifyServer.addHook('onClose', async () => {
-            await FastifyServer.dbClient.disconnect();
-        });
-
-        console.info('INFO: Initializing Database Table');
-        await FastifyServer.dbClient.initTable();
-
         console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT}`);
-        FastifyServer.listen({
+        server.listen({
             port: parseInt(process.env.SERVER_PORT)
         }, (err) => {
             if(err) throw new Error(err.message);
         });
     } catch (err) {
-        FastifyServer.log.error(err);
+        server.log.error(err);
         console.error('ERROR: ', err);
 
         // Close the instances
-        await FastifyServer.close();
-        await FastifyServer.dbClient.disconnect();
+        await server.close();
         process.exit(1);
     }
 }
