@@ -4,6 +4,7 @@ import BetResponseDTO from "../models/dtos/bet-response";
 import Bet from "../models/bet";
 import GeneratedQuery from "../models/generated-query";
 import CreateBetRequest from "../models/create-bet-request";
+import { QueryResult } from "pg";
 
 /**
  * @async
@@ -25,7 +26,14 @@ export const createBet = async (request: CreateBetRequest): Promise<ResponseDTO<
 
     const queryData: GeneratedQuery = bet.generateQuery();
 
-    console.info(queryData);
+    const result: QueryResult = await request.server.dbClient.query(
+        queryData.query, 
+        queryData.values
+    );
+
+    if(!result.rowCount) {
+        throw new Error()
+    }
 
     await request.server.dbClient.disconnect();
 

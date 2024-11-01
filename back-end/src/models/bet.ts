@@ -76,38 +76,6 @@ class Bet {
     }
 
     /**
-     * @public
-     * @static
-     * @function fromResponse
-     * @description Create a Bet object from the response dto
-     * @author J. Trpka
-     * @param {BetResponseDTO} response
-     * @returns {Bet}
-     */
-    public static fromResponse(response: BetResponseDTO): Bet {
-        const jeremy: Better = new Better(
-            response.jeremyAnswer,
-            response.jeremyBets,
-            response.jeremyWon
-        );
-
-        const hidemi: Better = new Better(
-            response.hidemiAnswer,
-            response.hidemiBets,
-            response.hidemiWon
-        );
-        
-        return new Bet(
-            response.stipulation,
-            jeremy,
-            hidemi,
-            response.id,
-            new Date(response.betEndsAt),
-            new Date(response.completedAt)
-        );
-    }
-
-    /**
      * @function canModify
      * @description Check if the Bet can be modified by checking if it has an ID
      * @author J. Trpka
@@ -172,8 +140,9 @@ class Bet {
      * @returns {GeneratedQuery}
      */
     private insertQuery = (): GeneratedQuery => {
-        const uuid = crypto.randomUUID();
-        this._id = uuid.toString();
+        // Initialize the ID for the Bet for the class and row
+        const uuid: string = crypto.randomUUID();
+        this._id = uuid;
 
         return {
             query: `
@@ -191,22 +160,22 @@ class Bet {
                     created_at,
                     updated_at
                 ) VALUES (
-                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
                 )
             `,
             values: [
-                uuid,
-                this._stipulation,
-                this._jeremy.answer,
-                this._hidemi.answer,
-                this._jeremy.bets,
-                this._hidemi.bets,
-                this._jeremy.didWon ? 'true' : 'false',
-                this._hidemi.didWon ? 'true' : 'false',
-                this._betEndsAt.toISOString(),
-                this._completedAt ? this._completedAt.toISOString() : null,
-                new Date().toISOString(), // created_at
-                new Date().toISOString() // updated_at
+                uuid, // 1
+                this._stipulation, // 2
+                this._jeremy.answer, // 3
+                this._hidemi.answer, // 4
+                this._jeremy.bets, // 5
+                this._hidemi.bets, // 6
+                this._jeremy.didWon ? 'true' : 'false', // 7
+                this._hidemi.didWon ? 'true' : 'false', // 8
+                this._betEndsAt.toISOString(), // 9
+                this._completedAt ? this._completedAt.toISOString() : null, // 10
+                new Date().toISOString(), // created_at - 11
+                new Date().toISOString() // updated_at - 12
             ]
         };
     }
