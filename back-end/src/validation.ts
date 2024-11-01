@@ -19,9 +19,13 @@ class Validate<T> {
 class Validator {
     private _errors: string[] = [];
 
+    get error(): string {
+        return this._errors[0];
+    }
+
     /**
      * @function required
-     * @description Check if there is a value (0 and false is considered truthy)
+     * @description Check if there is a value (0 and false is considered true)
      * @author J. Trpka
      * @param {Validate} validate 
      * @returns {Validator}
@@ -33,4 +37,12 @@ class Validator {
 
         return this;
     }
+
+    /**
+     * @function hasErrors
+     * @description Check if the validator has any errors
+     * @author J. Trpka
+     * @returns {boolean}
+     */
+    public hasErrors = (): boolean => this._errors.length > 0;
 }

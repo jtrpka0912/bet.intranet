@@ -127,6 +127,22 @@ class Bet {
     }
 
     /**
+     * @function validate
+     * @description Validate the bet if it can be inserted or updated to the database
+     * @author J. Trpka
+     * @returns {Validator}
+     */
+    validate = (): Validator => {
+        return new Validator()
+            .required(new Validate('Stipulation', this._stipulation))
+            .required(new Validate('Jeremy\'s Answer', this._jeremy.answer))
+            .required(new Validate('Hidemi\'s Answer', this._hidemi.answer))
+            .required(new Validate('Jeremy Bets', this._jeremy.bets))
+            .required(new Validate('Hidemi Bets', this._hidemi.bets))
+            .required(new Validate('Bet Ends At', this._betEndsAt.toISOString()))
+    }
+
+    /**
      * @function generateQuery
      * @description Generate the data needed for a write SQL query
      * @author J. Trpka

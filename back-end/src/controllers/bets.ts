@@ -15,14 +15,17 @@ import CreateBetRequest from "../models/create-bet-request";
  */
 export const createBet = async (request: CreateBetRequest): Promise<ResponseDTO<BetResponseDTO>> => {
     console.info('INFO: Creating Bet');
-    // await request.server.dbClient.connect();
 
     const requestBody: BetCreateRequestDTO = request.body;
-
     const bet: Bet = Bet.fromRequest(requestBody);
+
+    if(bet.validate().hasErrors) {
+        throw new Error(bet.validate().error);
+    }
+
     const queryData: GeneratedQuery = bet.generateQuery();
 
-    // await request.server.dbClient.disconnect();
+    await request.server.dbClient.disconnect();
 
     return {
         error: false,
