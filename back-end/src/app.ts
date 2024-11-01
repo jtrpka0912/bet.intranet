@@ -1,20 +1,4 @@
-import FastifyServer from './server';
-import PostgresClient from './postgres';
-
-require('dotenv').config({
-    path: '../.env'
-});
-
-const dbClient = new PostgresClient(
-    process.env.POSTGRES_USER, 
-    process.env.POSTGRES_PASSWORD
-);
-
-FastifyServer.get('/', async () => {
-    return {
-        hello: 'world'
-    };
-});
+import FastifyServer from './fastify';
 
 /**
  * @async
@@ -23,21 +7,12 @@ FastifyServer.get('/', async () => {
  * @author J. Trpka
  */
 const start = async () => {
+    console.info('INFO: Initializing Server');
+
     try {
-        console.info('INFO: Initializing Server');
-
-        await dbClient.connect();
-
-        FastifyServer.addHook('onClose', async () => {
-            await dbClient.disconnect();
-        });
-
-        console.info('INFO: Initializing Database Table');
-        await dbClient.initTable();
-
-        console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT}`);
+        console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT ?? 3000}`);
         FastifyServer.listen({
-            port: parseInt(process.env.SERVER_PORT)
+            port: parseInt(process.env.SERVER_PORT) ?? 3000
         }, (err) => {
             if(err) throw new Error(err.message);
         });
@@ -47,7 +22,6 @@ const start = async () => {
 
         // Close the instances
         await FastifyServer.close();
-        await dbClient.disconnect();
         process.exit(1);
     }
 }

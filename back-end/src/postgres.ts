@@ -1,4 +1,8 @@
-import {Client, QueryResult} from 'pg';
+import {Client, Pool, QueryResult} from 'pg';
+
+require('dotenv').config({
+    path: '../.env'
+});
 
 /**
  * @class
@@ -7,31 +11,20 @@ import {Client, QueryResult} from 'pg';
  * @author J. Trpka
  */
 class PostgresClient {
-    private _user: string;
-    private _password: string;
     private _tableName: string = 'bets';
 
-    private _client: Client;
+    private _pool: Pool;
 
     /**
      * @constructor
      * @description Initialize the Postgres client
      * @author J. Trpka
-     * @param {string} user 
-     * @param {string} password 
      */
-    constructor(user: string, password: string) {
-        this._user = user;
-        this._password = password;
-
-        this._client = new Client({
-            user,
-            password
-        });
-    }
-
-    get client(): Client {
-        return this._client;
+    constructor() {
+        this._pool = new Pool({
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_PASSWORD
+        })
     }
 
     /**
@@ -42,8 +35,8 @@ class PostgresClient {
      * @author J. Trpka
      */
     connect = async () => {
-        console.info('INFO: Connecting to Database');
-        this._client.connect()
+        console.info('INFO: Connecting the database');
+        await this._pool.connect()
     }
 
     /**
@@ -54,11 +47,13 @@ class PostgresClient {
      * @author J. Trpka
      */
     disconnect = async () => {
-        console.info('INFO: Disconnecting Database');
-        this._client.end();
+        console.info('INFO: Disconnecting from the database');
+        await this._pool.end();
     }
 
     initTable = async () => {
+        console.info('INFO: Initializing the database');
+
         await this.query(`
         -- Create the Bets table
         CREATE TABLE IF NOT EXISTS ${this._tableName} (
@@ -86,7 +81,7 @@ class PostgresClient {
      * @returns {Promise<QueryResult>}
      */
     query = async (query: string, values?: string[]): Promise<QueryResult> => {
-        return this._client.query(query, values);
+        return this._pool.query(query, values);
     }
 }
 
