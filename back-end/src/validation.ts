@@ -39,6 +39,23 @@ export class Validator {
     }
 
     /**
+     * @function greaterThan
+     * @description Check if the numeric value is greater than a number
+     * @author J. Trpka
+     * @param {Validate} validate 
+     * @param {number} compareTo 
+     * @param {string?} readableCompareTo
+     * @returns {Validator}
+     */
+    public greaterThan(validate: Validate<number>, compareTo: number, readableCompareTo?: string): Validator {
+        if(validate.value <= compareTo) {
+            this._errors.push(`${validate.field} has to be greater than ${readableCompareTo || compareTo}`);
+        }
+
+        return this;
+    }
+
+    /**
      * @function hasErrors
      * @description Check if the validator has any errors
      * @author J. Trpka

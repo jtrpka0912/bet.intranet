@@ -143,6 +143,11 @@ class Bet {
             .required(new Validate('Jeremy Did Won', this._jeremy.didWon))
             .required(new Validate('Hidemi Did Won', this._hidemi.didWon))
             .required(new Validate('Bet Ends At', this._betEndsAt.toISOString()))
+            .greaterThan(
+                new Validate('Bet Ends At', this._betEndsAt.getTime()), 
+                new Date().getTime(),
+                new Date().toLocaleString()
+            );
     }
 
     /**
