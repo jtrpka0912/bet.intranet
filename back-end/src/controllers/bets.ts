@@ -5,6 +5,7 @@ import Bet from "../models/bet";
 import GeneratedQuery from "../models/generated-query";
 import CreateBetRequest from "../models/create-bet-request";
 import { QueryResult } from "pg";
+import { FastifyReply } from "fastify";
 
 /**
  * @async
@@ -12,9 +13,9 @@ import { QueryResult } from "pg";
  * @description Create a bet by inserting a new row in the database
  * @author J. Trpka
  * @param {CreateBetRequest} request
- * @returns {Promise<ResponseDTO<BetResponseDTO>>}
+ * @param {FastifyReply} reply
  */
-export const createBet = async (request: CreateBetRequest): Promise<ResponseDTO<BetResponseDTO>> => {
+export const createBet = async (request: CreateBetRequest, reply: FastifyReply) => {
     console.info('INFO: Creating Bet');
 
     const requestBody: BetCreateRequestDTO = request.body;
@@ -32,25 +33,29 @@ export const createBet = async (request: CreateBetRequest): Promise<ResponseDTO<
     );
 
     if(!result.rowCount) {
-        throw new Error()
+        throw new Error('Unable to create new Bet record');
     }
 
-    await request.server.dbClient.disconnect();
+    reply
+        .code(201)
+        .send({
+            error: false,
+            message: null,
+            data: {
+                id: bet.id,
+                stipulation: bet.stipulation,
+                jeremyAnswer: bet.jeremy.answer,
+                hidemiAnswer: bet.hidemi.answer,
+                jeremyBets: bet.jeremy.bets,
+                hidemiBets: bet.hidemi.bets,
+                jeremyWon: bet.jeremy.didWon,
+                hidemiWon: bet.hidemi.didWon,
+                betEndsAt: bet.betEndsAt.toISOString(),
+                completedAt: bet.completedAt ? bet.completedAt.toISOString() : null
+            }
+        });
 
-    return {
-        error: false,
-        message: null,
-        data: {
-            id: crypto.randomUUID(),
-            stipulation: 'Stipulation',
-            jeremyAnswer: 'Jeremy Answer',
-            hidemiAnswer: 'Hidemi Answer',
-            jeremyBets: 'Jeremy Bets',
-            hidemiBets: 'Hidemi Bets',
-            jeremyWon: null,
-            hidemiWon: null,
-            betEndsAt: new Date().toISOString(),
-            completedAt: new Date().toISOString()
-        }
-    };
+    if(reply.sent) {
+        await request.server.dbClient.disconnect();
+    }
 }

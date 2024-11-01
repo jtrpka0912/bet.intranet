@@ -24,15 +24,15 @@ class Bet {
      * @param {Better} jeremy 
      * @param {Better} hidemi 
      * @param {string | null} id 
-     * @param {Date | null} betEndsAt 
-     * @param {Date | null} completedAt 
+     * @param {Date} betEndsAt 
+     * @param {Date?} completedAt 
      */
     private constructor(
         stipulation: string, 
         jeremy: Better, 
         hidemi: Better,
+        betEndsAt: Date,
         id?: string,
-        betEndsAt?: Date,
         completedAt?: Date
     ) {
         this._id = id;
@@ -43,6 +43,30 @@ class Bet {
         this._completedAt = completedAt;
     }
 
+    get id(): string {
+        return this._id;
+    }
+
+    get stipulation(): string {
+        return this._stipulation;
+    }
+
+    get jeremy(): Better {
+        return this._jeremy;
+    }
+
+    get hidemi(): Better {
+        return this._hidemi;
+    }
+
+    get betEndsAt(): Date {
+        return this._betEndsAt;
+    }
+
+    get completedAt(): Date {
+        return this._completedAt;
+    }
+
     /**
      * @public
      * @static
@@ -50,9 +74,10 @@ class Bet {
      * @description Create a Bet object from the request dto
      * @author J. Trpka
      * @param {BetCreateRequestDTO} request 
+     * @param {string?} id
      * @returns {Bet}
      */
-    public static fromRequest(request: BetCreateRequestDTO): Bet {
+    public static fromRequest(request: BetCreateRequestDTO, id?: string): Bet {
         const jeremy: Better = new Better(
             request.jeremyAnswer,
             request.jeremyBets,
@@ -69,8 +94,8 @@ class Bet {
             request.stipulation,
             jeremy,
             hidemi,
-            null,
             new Date(request.betEndsAt),
+            id,
             request.completedAt ? new Date(request.completedAt) : null
         );
     }
