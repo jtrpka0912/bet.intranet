@@ -1,6 +1,4 @@
-import ResponseDTO from "../models/dtos/response";
 import BetCreateRequestDTO from "../models/dtos/bet-create-request";
-import BetResponseDTO from "../models/dtos/bet-response";
 import Bet from "../models/bet";
 import GeneratedQuery from "../models/generated-query";
 import CreateBetRequest from "../models/create-bet-request";
