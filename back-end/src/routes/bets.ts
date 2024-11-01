@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest } from "fastify"
-import { createBet } from "../controllers/bets";
+import { retrieveBets, createBet } from "../controllers/bets";
 
 /**
  * @async
@@ -9,6 +9,7 @@ import { createBet } from "../controllers/bets";
  * @param {FastifyInstance} fastify
  */
 const routes = async (fastify: FastifyInstance) => {
+    fastify.get('/', retrieveBets);
     fastify.post('/', createBet);
 }
 

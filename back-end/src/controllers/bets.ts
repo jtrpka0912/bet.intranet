@@ -7,6 +7,15 @@ import CreateBetRequest from "../models/create-bet-request";
 import { QueryResult } from "pg";
 import { FastifyReply } from "fastify";
 
+export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
+    console.info('INFO: Retrieving Bets');
+
+    const page: number = parseInt(request.query['page']) || 0;
+    const limit: number = parseInt(request.query['limit']) || 20;
+
+    console.info(page, limit);
+}
+
 /**
  * @async
  * @function createBet
