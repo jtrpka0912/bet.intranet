@@ -1,4 +1,4 @@
-class Validate<T> {
+export class Validate<T> {
     private _field: string;
     private _value: T;
 
@@ -16,7 +16,7 @@ class Validate<T> {
     }
 }
 
-class Validator {
+export class Validator {
     private _errors: string[] = [];
 
     get error(): string {

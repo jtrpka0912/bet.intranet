@@ -1,3 +1,4 @@
+import { Validate, Validator } from "../validation";
 import BetCreateRequestDTO from "./dtos/bet-create-request";
 import BetResponseDTO from "./dtos/bet-response";
 import GeneratedQuery from "./generated-query";
@@ -11,7 +12,7 @@ class Bet {
     private _stipulation: string;
     private _jeremy: Better;
     private _hidemi: Better;
-    private _betEndsAt?: Date;
+    private _betEndsAt: Date;
     private _completedAt?: Date;
 
     /**
@@ -70,7 +71,7 @@ class Bet {
             hidemi,
             null,
             new Date(request.betEndsAt),
-            new Date(request.completedAt)
+            request.completedAt ? new Date(request.completedAt) : null
         );
     }
 
@@ -139,6 +140,8 @@ class Bet {
             .required(new Validate('Hidemi\'s Answer', this._hidemi.answer))
             .required(new Validate('Jeremy Bets', this._jeremy.bets))
             .required(new Validate('Hidemi Bets', this._hidemi.bets))
+            .required(new Validate('Jeremy Did Won', this._jeremy.didWon))
+            .required(new Validate('Hidemi Did Won', this._hidemi.didWon))
             .required(new Validate('Bet Ends At', this._betEndsAt.toISOString()))
     }
 
@@ -196,9 +199,9 @@ class Bet {
                 this._jeremy.didWon ? 'true' : 'false',
                 this._hidemi.didWon ? 'true' : 'false',
                 this._betEndsAt.toISOString(),
-                this._completedAt.toISOString(),
-                new Date().toISOString(),
-                new Date().toISOString()
+                this._completedAt ? this._completedAt.toISOString() : null,
+                new Date().toISOString(), // created_at
+                new Date().toISOString() // updated_at
             ]
         };
     }
@@ -236,8 +239,8 @@ class Bet {
                 this._hidemi.didWon ? 'true' : 'false',
                 this._betEndsAt.toISOString(),
                 this._completedAt.toISOString(),
-                new Date().toISOString(),
-                this._id
+                new Date().toISOString(), // updated_at
+                this._id // Where ID = ?
             ]
         }
     }
@@ -246,7 +249,7 @@ class Bet {
 class Better {
     private _answer: string;
     private _bets: string;
-    private _didWon?: boolean;
+    private _didWon: boolean;
 
     /**
      * @constructor
