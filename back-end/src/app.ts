@@ -1,14 +1,4 @@
-import fastify, { FastifyInstance } from 'fastify';
-import BettingRoutes from './routes/bets';
-import postgresClientPlugin from './plugins/postgres-client';
-
-const server: FastifyInstance = fastify();
-
-server.register(postgresClientPlugin);
-
-server.register(BettingRoutes, {
-    prefix: '/v1/bets'
-});
+import FastifyServer from './fastify';
 
 /**
  * @async
@@ -20,18 +10,18 @@ const start = async () => {
     console.info('INFO: Initializing Server');
 
     try {
-        console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT}`);
-        server.listen({
-            port: parseInt(process.env.SERVER_PORT)
+        console.info(`INFO: Running Server on Port ${process.env.SERVER_PORT ?? 3000}`);
+        FastifyServer.listen({
+            port: parseInt(process.env.SERVER_PORT) ?? 3000
         }, (err) => {
             if(err) throw new Error(err.message);
         });
     } catch (err) {
-        server.log.error(err);
+        FastifyServer.log.error(err);
         console.error('ERROR: ', err);
 
         // Close the instances
-        await server.close();
+        await FastifyServer.close();
         process.exit(1);
     }
 }
