@@ -16,6 +16,10 @@ async function postgresClientPlugin(instance: FastifyInstance) {
     instance.addHook('onClose', async () => {
         await dbClient.disconnect();
     });
+
+    instance.addHook('onReady', async () => {
+        await dbClient.initTable();
+    });
 };
 
 export default fastifyPlugin(postgresClientPlugin);

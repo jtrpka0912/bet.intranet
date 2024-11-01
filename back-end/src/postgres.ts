@@ -1,4 +1,4 @@
-import {Client, QueryResult} from 'pg';
+import {Client, Pool, QueryResult} from 'pg';
 
 require('dotenv').config({
     path: '../.env'
@@ -13,7 +13,7 @@ require('dotenv').config({
 class PostgresClient {
     private _tableName: string = 'bets';
 
-    private _client: Client;
+    private _pool: Pool;
 
     /**
      * @constructor
@@ -21,14 +21,10 @@ class PostgresClient {
      * @author J. Trpka
      */
     constructor() {
-        this._client = new Client({
+        this._pool = new Pool({
             user: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD
-        });
-    }
-
-    get client(): Client {
-        return this._client;
+        })
     }
 
     /**
@@ -39,8 +35,8 @@ class PostgresClient {
      * @author J. Trpka
      */
     connect = async () => {
-        console.info('INFO: Connecting to Database');
-        await this._client.connect()
+        console.info('INFO: Connecting the database');
+        await this._pool.connect()
     }
 
     /**
@@ -51,11 +47,13 @@ class PostgresClient {
      * @author J. Trpka
      */
     disconnect = async () => {
-        console.info('INFO: Disconnecting Database');
-        await this._client.end();
+        console.info('INFO: Disconnecting from the database');
+        await this._pool.end();
     }
 
     initTable = async () => {
+        console.info('INFO: Initializing the database');
+
         await this.query(`
         -- Create the Bets table
         CREATE TABLE IF NOT EXISTS ${this._tableName} (
@@ -83,7 +81,7 @@ class PostgresClient {
      * @returns {Promise<QueryResult>}
      */
     query = async (query: string, values?: string[]): Promise<QueryResult> => {
-        return this._client.query(query, values);
+        return this._pool.query(query, values);
     }
 }
 
