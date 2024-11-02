@@ -35,15 +35,17 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
         `SELECT 
             id, 
             stipulation, 
-            jeremy_answer, 
-            hidemi_answer,
-            jeremy_bets,
-            hidemi_bets,
-            jeremy_won,
-            hidemi_won,
-            ends_at,
-            completed_at
+            -- I wish there was a better way to map these property names to the DTO types
+            jeremy_answer AS "jeremyAnswer", 
+            hidemi_answer AS "hidemiAnswer",
+            jeremy_bets AS "jeremyBets",
+            hidemi_bets AS "hidemiBets",
+            jeremy_won AS "jeremyWon",
+            hidemi_won AS "hidemiWon",
+            ends_at AS "endsAt",
+            completed_at AS "completedAt"
         FROM bets
+        ORDER BY created_at DESC
         LIMIT $1 OFFSET $2`,
         [limit, page]
     );
@@ -249,14 +251,15 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
         `
             SELECT
                 stipulation,
-                jeremy_answer,
-                hidemi_answer,
-                jeremy_bets,
-                hidemi_bets,
-                jeremy_won,
-                hidemi_won,
-                ends_at,
-                completed_at
+                -- I wish there was a better way to map these properties to the DTO type
+                jeremy_answer AS "jeremyAnswer",
+                hidemi_answer AS "hidemiAnswer",
+                jeremy_bets AS "jeremyBets",
+                hidemi_bets AS "hidemiBets",
+                jeremy_won AS "jeremyWon",
+                hidemi_won AS "hidemiWon",
+                ends_at AS "endsAt",
+                completed_at AS "completedAt"
             FROM bets
             WHERE id = $1
         `,
