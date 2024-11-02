@@ -7,6 +7,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import ResponseDTO from "../models/dtos/response";
 import BetResponseDTO from "../models/dtos/bet-response";
 import BetPaginationResponseDTO from "../models/dtos/bet-pagination-response";
+import CompleteBetRequest from "../models/complete-bet-request";
+import BetCompleteRequestDTO from "../models/dtos/bet-complete-request";
 
 export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
     request.log.info('INFO: Retrieving Bets');
@@ -111,12 +113,12 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
  * @param {FastifyRequest} request 
  * @param {FastifyReply} reply 
  */
-export const completeBet = async (request: FastifyRequest, reply: FastifyReply) => {
+export const completeBet = async (request: CompleteBetRequest, reply: FastifyReply) => {
     request.log.info('INFO: Completing a Bet');
 
     const uuid: string = request.params['id'];
 
-    // We are mainly trying to see if the bet exists, otherwise throw an error
+    // Mainly trying to see if the bet exists, otherwise throw a 404
     const retrieveBetFromUUID: QueryResult = 
         await request.server.dbClient.query(
             `SELECT id FROM bets WHERE id = $1`,
@@ -124,11 +126,34 @@ export const completeBet = async (request: FastifyRequest, reply: FastifyReply) 
         );
     
     if(retrieveBetFromUUID.rowCount === 0) {
+        // The default 404 error message is not suitable for not finding a bet
         return reply.send({
             error: true,
             message: `Bet not found`,
             data: null
         }).code(404);
+    }
+
+    const body: BetCompleteRequestDTO = request.body;
+
+    const updateResult: QueryResult = await request.server.dbClient.query(
+        `UPDATE bets SET
+            jeremy_won = $1,
+            hidemi_won = $2,
+            completed_at = $3,
+            updated_at = $4
+        WHERE id = $5`,
+        [
+            body.jeremyWon ? 'true' : 'false', 
+            body.hidemiWon ? 'true' : 'false', 
+            body.completedAt, 
+            new Date().toISOString(), 
+            uuid
+        ]
+    );
+
+    if(updateResult.rowCount === 0) {
+        throw new Error('Unable to update existing Bet');
     }
 
     return reply.send({hello: 'world'});
