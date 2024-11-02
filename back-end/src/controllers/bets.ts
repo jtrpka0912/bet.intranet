@@ -31,7 +31,6 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
     );
 
     // Retrieve a paginated set of bets
-    // TODO: Change the colum names to be more approriate with the Bet Response DTO
     const result: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
         `SELECT 
             id, 
@@ -42,7 +41,7 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
             hidemi_bets,
             jeremy_won,
             hidemi_won,
-            bet_ends_at,
+            ends_at,
             completed_at
         FROM bets
         LIMIT $1 OFFSET $2`,
@@ -79,7 +78,7 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
 
     const requestBody: BetCreateRequestDTO = request.body;
 
-    const betEndsAt: Date = new Date(requestBody.betEndsAt);
+    const endsAt: Date = new Date(requestBody.endsAt);
 
     // Validate the data
     const validator: Validator = new Validator()
@@ -88,9 +87,9 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
         .required(new Validate('Hidemi\'s Answer', requestBody.hidemiAnswer))
         .required(new Validate('Jeremy Bets', requestBody.jeremyBets))
         .required(new Validate('Hidemi Bets', requestBody.hidemiBets))
-        .required(new Validate('Bet Ends At', betEndsAt.toISOString()))
+        .required(new Validate('Ends At', endsAt.toISOString()))
         .greaterThan(
-            new Validate('Bet Ends At', betEndsAt.getTime()), 
+            new Validate('Ends At', endsAt.getTime()), 
             new Date().getTime(),
             new Date().toLocaleString()
         );
@@ -117,14 +116,11 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
                 hidemi_answer,
                 jeremy_bets,
                 hidemi_bets,
-                jeremy_won,
-                hidemi_won,
-                bet_ends_at,
-                completed_at,
+                ends_at,
                 created_at,
                 updated_at
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+                $1, $2, $3, $4, $5, $6, $7, $8, $9
             )
         `, 
         [
@@ -134,12 +130,9 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
             requestBody.hidemiAnswer, // 4 - hidemi_answer
             requestBody.jeremyBets, // 5 - jeremy_bets
             requestBody.hidemiBets, // 6 - hidemi_bets
-            'false', // 7 - jeremy_won
-            'false', // 8 - hidemi_won
-            requestBody.betEndsAt, // 9 - bet_ends_at
-            null, // 10 - completed_at
-            new Date().toISOString(), // created_at - 11
-            new Date().toISOString() // updated_at - 12
+            requestBody.endsAt, // 7 - bet_ends_at
+            new Date().toISOString(), // created_at - 8
+            new Date().toISOString() // updated_at - 9
         ]
     );
 
@@ -159,7 +152,7 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
             hidemiBets: requestBody.hidemiBets,
             jeremyWon: false,
             hidemiWon: false,
-            betEndsAt: requestBody.betEndsAt,
+            endsAt: requestBody.endsAt,
             completedAt: null
         }
     }
@@ -262,7 +255,7 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
                 hidemi_bets,
                 jeremy_won,
                 hidemi_won,
-                bet_ends_at,
+                ends_at,
                 completed_at
             FROM bets
             WHERE id = $1
