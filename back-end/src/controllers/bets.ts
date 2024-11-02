@@ -51,7 +51,7 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
         }
     }
 
-    reply.send(response).code(200);
+    return reply.send(response).code(200);
 }
 
 /**
@@ -100,7 +100,7 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
         }
     }
 
-    reply.code(201).send(response);
+    return reply.code(201).send(response);
 }
 
 /**
@@ -116,5 +116,20 @@ export const completeBet = async (request: FastifyRequest, reply: FastifyReply) 
 
     const uuid: string = request.params['id'];
 
-    reply.send({hello: 'world'});
+    // We are mainly trying to see if the bet exists, otherwise throw an error
+    const retrieveBetFromUUID: QueryResult = 
+        await request.server.dbClient.query(
+            `SELECT id FROM bets WHERE id = $1`,
+            [uuid]
+        );
+    
+    if(retrieveBetFromUUID.rowCount === 0) {
+        return reply.send({
+            error: true,
+            message: `Bet not found`,
+            data: null
+        }).code(404);
+    }
+
+    return reply.send({hello: 'world'});
 }
