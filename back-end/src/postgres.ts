@@ -35,7 +35,6 @@ class PostgresClient {
      * @author J. Trpka
      */
     connect = async () => {
-        console.info('INFO: Connecting the database');
         await this._pool.connect()
     }
 
@@ -47,13 +46,15 @@ class PostgresClient {
      * @author J. Trpka
      */
     disconnect = async () => {
-        console.info('INFO: Disconnecting from the database');
         await this._pool.end();
     }
 
+    /**
+     * @function initTable
+     * @description Initially create the necessary tables unless already exists
+     * @author J. Trpka
+     */
     initTable = async () => {
-        console.info('INFO: Initializing the database');
-
         await this.query(`
         -- Create the Bets table
         CREATE TABLE IF NOT EXISTS ${this._tableName} (

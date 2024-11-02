@@ -9,7 +9,7 @@ import fastifyPlugin from "fastify-plugin";
  * @param {FastifyInstance} instance 
  */
 async function postgresClientPlugin(instance: FastifyInstance) {
-    console.info('INFO: Attaching Database to Server');
+    instance.log.info('INFO: Attaching Database to Server');
     const dbClient: PostgresClient = new PostgresClient();
     instance.decorate('dbClient', dbClient);
 
