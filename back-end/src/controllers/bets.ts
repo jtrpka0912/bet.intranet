@@ -4,6 +4,8 @@ import GeneratedQuery from "../models/generated-query";
 import CreateBetRequest from "../models/create-bet-request";
 import { QueryResult } from "pg";
 import { FastifyReply } from "fastify";
+import ResponseDTO from "../models/dtos/response";
+import BetResponseDTO from "../models/dtos/bet-response";
 
 export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
     console.info('INFO: Retrieving Bets');
@@ -11,7 +13,29 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
     const page: number = parseInt(request.query['page']) || 0;
     const limit: number = parseInt(request.query['limit']) || 20;
 
-    console.info(page, limit);
+    const result: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
+        `SELECT 
+            id, 
+            stipulation, 
+            jeremy_answer, 
+            hidemi_answer,
+            jeremy_bets,
+            hidemi_bets,
+            jeremy_won,
+            hidemi_won,
+            bet_ends_at,
+            completed_at
+        FROM bets`,
+        []
+    );
+
+    const response: ResponseDTO<BetResponseDTO[]> = {
+        error: false,
+        message: null,
+        data: result.rows
+    }
+
+    reply.send(response).code(200);
 }
 
 /**
@@ -43,26 +67,22 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
         throw new Error('Unable to create new Bet record');
     }
 
-    reply
-        .code(201)
-        .send({
-            error: false,
-            message: null,
-            data: {
-                id: bet.id,
-                stipulation: bet.stipulation,
-                jeremyAnswer: bet.jeremy.answer,
-                hidemiAnswer: bet.hidemi.answer,
-                jeremyBets: bet.jeremy.bets,
-                hidemiBets: bet.hidemi.bets,
-                jeremyWon: bet.jeremy.didWon,
-                hidemiWon: bet.hidemi.didWon,
-                betEndsAt: bet.betEndsAt.toISOString(),
-                completedAt: bet.completedAt ? bet.completedAt.toISOString() : null
-            }
-        });
-
-    if(reply.sent) {
-        await request.server.dbClient.disconnect();
+    const response: ResponseDTO<BetResponseDTO> = {
+        error: false,
+        message: null,
+        data: {
+            id: bet.id,
+            stipulation: bet.stipulation,
+            jeremyAnswer: bet.jeremy.answer,
+            hidemiAnswer: bet.hidemi.answer,
+            jeremyBets: bet.jeremy.bets,
+            hidemiBets: bet.hidemi.bets,
+            jeremyWon: bet.jeremy.didWon,
+            hidemiWon: bet.hidemi.didWon,
+            betEndsAt: bet.betEndsAt.toISOString(),
+            completedAt: bet.completedAt ? bet.completedAt.toISOString() : null
+        }
     }
+
+    reply.code(201).send(response);
 }

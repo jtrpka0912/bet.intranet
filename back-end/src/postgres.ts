@@ -51,6 +51,11 @@ class PostgresClient {
         await this._pool.end();
     }
 
+    /**
+     * @function initTable
+     * @description Initially create the necessary tables unless already exists
+     * @author J. Trpka
+     */
     initTable = async () => {
         console.info('INFO: Initializing the database');
 
