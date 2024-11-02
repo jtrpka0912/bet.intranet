@@ -1,16 +1,25 @@
 import BetCreateRequestDTO from "../models/dtos/bet-create-request";
 import Bet from "../models/bet";
 import GeneratedQuery from "../models/generated-query";
-import CreateBetRequest from "../models/create-bet-request";
+import CreateBetRequest from "../models/dtos/fastify-requests/create-bet-request";
 import { QueryResult } from "pg";
 import { FastifyReply, FastifyRequest } from "fastify";
 import ResponseDTO from "../models/dtos/response";
 import BetResponseDTO from "../models/dtos/bet-response";
 import BetPaginationResponseDTO from "../models/dtos/bet-pagination-response";
-import CompleteBetRequest from "../models/complete-bet-request";
+import CompleteBetRequest from "../models/dtos/fastify-requests/complete-bet-request";
 import BetCompleteRequestDTO from "../models/dtos/bet-complete-request";
+import BetCompleteCheckQueryResult from "../models/dtos/query-results/bet-complete-check";
 
-export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
+/**
+ * @async
+ * @function retrieveBets
+ * @description Retrieve a pagination set of bets
+ * @author J. Trpka
+ * @param {FastifyRequest} request 
+ * @param {FastifyReply} reply
+ */
+export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply) => {
     request.log.info('INFO: Retrieving Bets');
 
     const page: string = request.query['page'] || '0';
@@ -22,6 +31,7 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
     );
 
     // Retrieve a paginated set of bets
+    // TODO: Change the colum names to be more approriate with the Bet Response DTO
     const result: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
         `SELECT 
             id, 
@@ -108,7 +118,7 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
 /**
  * @async
  * @function completeBet
- * @description Complete a bet by setting the winner and completed at fields.
+ * @description Complete a bet by setting the winner(s) and completed at fields.
  * @author J. Trpka
  * @param {FastifyRequest} request 
  * @param {FastifyReply} reply 
@@ -119,13 +129,16 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
     const uuid: string = request.params['id'];
 
     // Mainly trying to see if the bet exists, otherwise throw a 404
-    const retrieveBetFromUUID: QueryResult = 
+    const checkBetWithUUID: QueryResult<BetCompleteCheckQueryResult> = 
         await request.server.dbClient.query(
-            `SELECT id FROM bets WHERE id = $1`,
+            `SELECT 
+                completed_at AS "completedAt"
+            FROM bets WHERE id = $1`,
             [uuid]
         );
     
-    if(retrieveBetFromUUID.rowCount === 0) {
+    // Did the result not return any rows?
+    if(checkBetWithUUID.rowCount === 0) {
         // The default 404 error message is not suitable for not finding a bet
         return reply.send({
             error: true,
@@ -134,6 +147,25 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
         }).code(404);
     }
 
+    // Could it return too many bets?
+    if(checkBetWithUUID.rowCount > 1) {
+        return reply.send({
+            error: true,
+            message: 'Found too many bets of the same ID',
+            data: null
+        }).code(500);
+    }
+
+    // Was the bet already completed?
+    if(checkBetWithUUID.rows[0].completedAt) {
+        return reply.send({
+            error: true,
+            message: 'Bet was already completed',
+            data: null
+        }).code(400);
+    }
+
+    // At this point; lets complete the bet
     const body: BetCompleteRequestDTO = request.body;
 
     const updateResult: QueryResult = await request.server.dbClient.query(
@@ -155,6 +187,8 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
     if(updateResult.rowCount === 0) {
         throw new Error('Unable to update existing Bet');
     }
+
+    // TODO: Re-retrieve the updated bet for the response
 
     return reply.send({hello: 'world'});
 }

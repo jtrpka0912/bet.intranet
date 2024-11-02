@@ -1,5 +1,5 @@
 import { FastifyRequest } from "fastify";
-import BetCreateRequestDTO from "./dtos/bet-create-request";
+import BetCreateRequestDTO from "../bet-create-request";
 
 interface CreateBetRequest extends FastifyRequest {
     body: BetCreateRequestDTO
