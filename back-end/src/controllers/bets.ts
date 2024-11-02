@@ -10,8 +10,8 @@ import BetResponseDTO from "../models/dtos/bet-response";
 export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
     console.info('INFO: Retrieving Bets');
 
-    const page: number = parseInt(request.query['page']) || 0;
-    const limit: number = parseInt(request.query['limit']) || 20;
+    const page: string = request.query['page'] || '0';
+    const limit: string = request.query['limit'] || '20';
 
     const result: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
         `SELECT 
@@ -25,8 +25,9 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
             hidemi_won,
             bet_ends_at,
             completed_at
-        FROM bets`,
-        []
+        FROM bets
+        LIMIT $1 OFFSET $2`,
+        [limit, page]
     );
 
     const response: ResponseDTO<BetResponseDTO[]> = {
