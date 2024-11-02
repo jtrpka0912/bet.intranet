@@ -4,10 +4,7 @@ type BetCreateRequestDTO = {
     hidemiAnswer: string,
     jeremyBets: string,
     hidemiBets: string,
-    jeremyWon: boolean,
-    hidemiWon: boolean,
-    betEndsAt: string,
-    completedAt: string
+    betEndsAt: string
 }
 
 export default BetCreateRequestDTO;

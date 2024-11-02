@@ -1,9 +1,9 @@
-import BetCreateRequestDTO from "../models/dtos/bet-create-request";
-import Bet from "../models/bet";
-import GeneratedQuery from "../models/generated-query";
-import CreateBetRequest from "../models/dtos/fastify-requests/create-bet-request";
 import { QueryResult } from "pg";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { Validate, Validator } from "../validation";
+
+import BetCreateRequestDTO from "../models/dtos/bet-create-request";
+import CreateBetRequest from "../models/dtos/fastify-requests/create-bet-request";
 import ResponseDTO from "../models/dtos/response";
 import BetResponseDTO from "../models/dtos/bet-response";
 import BetPaginationResponseDTO from "../models/dtos/bet-pagination-response";
@@ -63,7 +63,7 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
         }
     }
 
-    return reply.send(response).code(200);
+    return reply.send(response);
 }
 
 /**
@@ -78,17 +78,69 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
     request.log.info('INFO: Creating a Bet');
 
     const requestBody: BetCreateRequestDTO = request.body;
-    const bet: Bet = Bet.fromRequest(requestBody);
 
-    if(bet.validate().hasErrors()) {
-        throw new Error(bet.validate().error);
+    const betEndsAt: Date = new Date(requestBody.betEndsAt);
+
+    // Validate the data
+    const validator: Validator = new Validator()
+        .required(new Validate('Stipulation', requestBody.stipulation))
+        .required(new Validate('Jeremy\'s Answer', requestBody.jeremyAnswer))
+        .required(new Validate('Hidemi\'s Answer', requestBody.hidemiAnswer))
+        .required(new Validate('Jeremy Bets', requestBody.jeremyBets))
+        .required(new Validate('Hidemi Bets', requestBody.hidemiBets))
+        .required(new Validate('Bet Ends At', betEndsAt.toISOString()))
+        .greaterThan(
+            new Validate('Bet Ends At', betEndsAt.getTime()), 
+            new Date().getTime(),
+            new Date().toLocaleString()
+        );
+
+    if(validator.hasErrors()) {
+        return reply
+            .code(400)    
+            .send({
+                error: true,
+                message: validator.error,
+                data: null
+            });
     }
 
-    const queryData: GeneratedQuery = bet.generateQuery();
+    // At this point, create the new bet
 
+    const uuid: string = crypto.randomUUID();
     const result: QueryResult = await request.server.dbClient.query(
-        queryData.query, 
-        queryData.values
+        `
+            INSERT INTO bets (
+                id,
+                stipulation,
+                jeremy_answer,
+                hidemi_answer,
+                jeremy_bets,
+                hidemi_bets,
+                jeremy_won,
+                hidemi_won,
+                bet_ends_at,
+                completed_at,
+                created_at,
+                updated_at
+            ) VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+            )
+        `, 
+        [
+            uuid, // 1 - id
+            requestBody.stipulation, // 2 - stipulation
+            requestBody.jeremyAnswer, // 3 - jeremy_answer
+            requestBody.hidemiAnswer, // 4 - hidemi_answer
+            requestBody.jeremyBets, // 5 - jeremy_bets
+            requestBody.hidemiBets, // 6 - hidemi_bets
+            'false', // 7 - jeremy_won
+            'false', // 8 - hidemi_won
+            requestBody.betEndsAt, // 9 - bet_ends_at
+            null, // 10 - completed_at
+            new Date().toISOString(), // created_at - 11
+            new Date().toISOString() // updated_at - 12
+        ]
     );
 
     if(!result.rowCount) {
@@ -99,16 +151,16 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
         error: false,
         message: null,
         data: {
-            id: bet.id,
-            stipulation: bet.stipulation,
-            jeremyAnswer: bet.jeremy.answer,
-            hidemiAnswer: bet.hidemi.answer,
-            jeremyBets: bet.jeremy.bets,
-            hidemiBets: bet.hidemi.bets,
-            jeremyWon: bet.jeremy.didWon,
-            hidemiWon: bet.hidemi.didWon,
-            betEndsAt: bet.betEndsAt.toISOString(),
-            completedAt: bet.completedAt ? bet.completedAt.toISOString() : null
+            id: uuid,
+            stipulation: requestBody.stipulation,
+            jeremyAnswer: requestBody.jeremyAnswer,
+            hidemiAnswer: requestBody.hidemiAnswer,
+            jeremyBets: requestBody.jeremyBets,
+            hidemiBets: requestBody.hidemiBets,
+            jeremyWon: false,
+            hidemiWon: false,
+            betEndsAt: requestBody.betEndsAt,
+            completedAt: null
         }
     }
 
@@ -140,33 +192,45 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
     // Did the result not return any rows?
     if(checkBetWithUUID.rowCount === 0) {
         // The default 404 error message is not suitable for not finding a bet
-        return reply.send({
+        return reply.code(404).send({
             error: true,
             message: `Bet not found`,
             data: null
-        }).code(404);
+        });
     }
 
     // Could it return too many bets?
     if(checkBetWithUUID.rowCount > 1) {
-        return reply.send({
+        return reply.code(500).send({
             error: true,
             message: 'Found too many bets of the same ID',
             data: null
-        }).code(500);
+        });
     }
 
     // Was the bet already completed?
     if(checkBetWithUUID.rows[0].completedAt) {
-        return reply.send({
+        return reply.code(400).send({
             error: true,
             message: 'Bet was already completed',
             data: null
-        }).code(400);
+        });
     }
 
     // At this point; lets complete the bet
     const body: BetCompleteRequestDTO = request.body;
+
+    const validator: Validator = new Validator()
+        .required(new Validate('Jeremy Won', body.jeremyWon))
+        .required(new Validate('Hidemi Won', body.hidemiWon));
+
+    if(validator.hasErrors()) {
+        return reply.code(400).send({
+            error: true,
+            message: validator.error,
+            data: null
+        });
+    }
 
     const updateResult: QueryResult = await request.server.dbClient.query(
         `UPDATE bets SET
