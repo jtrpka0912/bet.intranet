@@ -178,8 +178,8 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
         [
             body.jeremyWon ? 'true' : 'false', 
             body.hidemiWon ? 'true' : 'false', 
-            body.completedAt, 
             new Date().toISOString(), 
+            new Date().toISOString(),
             uuid
         ]
     );
@@ -188,7 +188,37 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
         throw new Error('Unable to update existing Bet');
     }
 
-    // TODO: Re-retrieve the updated bet for the response
+    const updatedResult: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
+        `
+            SELECT
+                stipulation,
+                jeremy_answer,
+                hidemi_answer,
+                jeremy_bets,
+                hidemi_bets,
+                jeremy_won,
+                hidemi_won,
+                bet_ends_at,
+                completed_at
+            FROM bets
+            WHERE id = $1
+        `,
+        [uuid]
+    );
 
-    return reply.send({hello: 'world'});
+    if(updatedResult.rowCount === 0) {
+        throw new Error('Unable to find completed bet');
+    }
+
+    if(updatedResult.rowCount > 1) {
+        throw new Error('May have updated more than one bet');
+    }
+
+    const response: ResponseDTO<BetResponseDTO> = {
+        error: false,
+        message: null,
+        data: updatedResult.rows[0]
+    };
+
+    return reply.send(response);
 }

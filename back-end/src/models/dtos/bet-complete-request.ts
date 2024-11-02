@@ -1,7 +1,6 @@
 type BetCompleteRequestDTO = {
     jeremyWon: boolean,
-    hidemiWon: boolean,
-    completedAt: string
+    hidemiWon: boolean
 };
 
 export default BetCompleteRequestDTO;
