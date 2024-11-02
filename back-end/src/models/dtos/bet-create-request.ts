@@ -4,7 +4,7 @@ type BetCreateRequestDTO = {
     hidemiAnswer: string,
     jeremyBets: string,
     hidemiBets: string,
-    betEndsAt: string
+    endsAt: string
 }
 
 export default BetCreateRequestDTO;

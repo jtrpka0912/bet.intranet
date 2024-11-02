@@ -7,7 +7,7 @@ type BetResponseDTO = {
     hidemiBets: string,
     jeremyWon: boolean,
     hidemiWon: boolean,
-    betEndsAt: string,
+    endsAt: string,
     completedAt: string
 }
 

@@ -64,10 +64,10 @@ class PostgresClient {
             hidemi_answer TEXT NOT NULL, -- What is Hidemi answer that will win the bet
             jeremy_bets TEXT NOT NULL, -- What is Jeremy's prize when winning bet
             hidemi_bets TEXT NOT NULL, -- What is Hidemi's prize when winning bet
-            jeremy_won BOOLEAN NULL, -- Did Jeremy won bet, null is undecided
-            hidemi_won BOOLEAN NULL, -- Did Hidemi won bet, null is undecided
-            bet_ends_at TIMESTAMP WITH TIME ZONE NULL, -- The bet will end at a specific date
-            completed_at TIMESTAMP WITH TIME ZONE NULL, -- The bet finished on a specific data
+            jeremy_won BOOLEAN DEFAULT false, -- Did Jeremy won bet
+            hidemi_won BOOLEAN DEFAULT false, -- Did Hidemi won bet
+            ends_at TIMESTAMP WITH TIME ZONE NOT NULL, -- The bet will end at a specific date
+            completed_at TIMESTAMP WITH TIME ZONE NULL, -- The bet is completed on a specific data
             created_at TIMESTAMP WITH TIME ZONE DEFAULT now(), -- This row was created at a specific date
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() -- This row was updated at a specific date
         )`);
