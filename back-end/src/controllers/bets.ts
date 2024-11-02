@@ -3,7 +3,7 @@ import Bet from "../models/bet";
 import GeneratedQuery from "../models/generated-query";
 import CreateBetRequest from "../models/create-bet-request";
 import { QueryResult } from "pg";
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import ResponseDTO from "../models/dtos/response";
 import BetResponseDTO from "../models/dtos/bet-response";
 import BetPaginationResponseDTO from "../models/dtos/bet-pagination-response";
@@ -63,7 +63,7 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
  * @param {FastifyReply} reply
  */
 export const createBet = async (request: CreateBetRequest, reply: FastifyReply) => {
-    request.log.info('INFO: Creating Bet');
+    request.log.info('INFO: Creating a Bet');
 
     const requestBody: BetCreateRequestDTO = request.body;
     const bet: Bet = Bet.fromRequest(requestBody);
@@ -101,4 +101,20 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
     }
 
     reply.code(201).send(response);
+}
+
+/**
+ * @async
+ * @function completeBet
+ * @description Complete a bet by setting the winner and completed at fields.
+ * @author J. Trpka
+ * @param {FastifyRequest} request 
+ * @param {FastifyReply} reply 
+ */
+export const completeBet = async (request: FastifyRequest, reply: FastifyReply) => {
+    request.log.info('INFO: Completing a Bet');
+
+    const uuid: string = request.params['id'];
+
+    reply.send({hello: 'world'});
 }
