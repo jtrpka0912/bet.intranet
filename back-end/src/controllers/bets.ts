@@ -6,6 +6,7 @@ import { QueryResult } from "pg";
 import { FastifyReply } from "fastify";
 import ResponseDTO from "../models/dtos/response";
 import BetResponseDTO from "../models/dtos/bet-response";
+import BetPaginationResponseDTO from "../models/dtos/bet-pagination-response";
 
 export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
     console.info('INFO: Retrieving Bets');
@@ -13,6 +14,12 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
     const page: string = request.query['page'] || '0';
     const limit: string = request.query['limit'] || '20';
 
+    // Retrieve the total count of bets
+    const countResult: QueryResult = await request.server.dbClient.query(
+        `SELECT COUNT(id) AS count FROM bets`
+    );
+
+    // Retrieve a paginated set of bets
     const result: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
         `SELECT 
             id, 
@@ -30,10 +37,18 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
         [limit, page]
     );
 
-    const response: ResponseDTO<BetResponseDTO[]> = {
+    const count: number = parseInt(countResult.rows[0].count);
+
+    const response: ResponseDTO<BetPaginationResponseDTO<BetResponseDTO>> = {
         error: false,
         message: null,
-        data: result.rows
+        data: {
+            count,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            pages: Math.ceil(count/parseInt(limit)),
+            items:  result.rows
+        }
     }
 
     reply.send(response).code(200);

@@ -3,12 +3,18 @@ import postgresClientPlugin from './plugins/postgres-client';
 import BettingRoutes from './routes/bets';
 import ResponseDTO from "./models/dtos/response";
 
-const server: FastifyInstance = fastify();
+const server: FastifyInstance = fastify({
+    logger: true
+});
 
 server.register(postgresClientPlugin);
 
 server.register(BettingRoutes, {
     prefix: '/v1/bets'
+});
+
+server.addHook('onClose', async (instance: FastifyInstance) => {
+    await instance.dbClient.disconnect();
 });
 
 server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
