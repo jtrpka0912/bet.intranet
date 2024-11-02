@@ -14,6 +14,7 @@ server.register(BettingRoutes, {
 });
 
 server.addHook('onClose', async (instance: FastifyInstance) => {
+    instance.log.info('INFO: Disconnecting Database');
     await instance.dbClient.disconnect();
 });
 

@@ -9,7 +9,7 @@ import BetResponseDTO from "../models/dtos/bet-response";
 import BetPaginationResponseDTO from "../models/dtos/bet-pagination-response";
 
 export const retrieveBets = async (request: CreateBetRequest, reply: FastifyReply) => {
-    console.info('INFO: Retrieving Bets');
+    request.log.info('INFO: Retrieving Bets');
 
     const page: string = request.query['page'] || '0';
     const limit: string = request.query['limit'] || '20';
@@ -63,7 +63,7 @@ export const retrieveBets = async (request: CreateBetRequest, reply: FastifyRepl
  * @param {FastifyReply} reply
  */
 export const createBet = async (request: CreateBetRequest, reply: FastifyReply) => {
-    console.info('INFO: Creating Bet');
+    request.log.info('INFO: Creating Bet');
 
     const requestBody: BetCreateRequestDTO = request.body;
     const bet: Bet = Bet.fromRequest(requestBody);
