@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres:
     image: postgres:latest
     container_name: postgres
     environment:
@@ -11,6 +11,21 @@ services:
     volumes:
       # The volume to store the database data
       - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    container_name: bets-backend
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - SERVER_PORT=${SERVER_PORT}
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:

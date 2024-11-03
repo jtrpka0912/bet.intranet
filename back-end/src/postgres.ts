@@ -23,7 +23,8 @@ class PostgresClient {
     constructor() {
         this._pool = new Pool({
             user: process.env.POSTGRES_USER,
-            password: process.env.POSTGRES_PASSWORD
+            password: process.env.POSTGRES_PASSWORD,
+            host: 'postgres' // Name of the docker compose database service
         })
     }
 
