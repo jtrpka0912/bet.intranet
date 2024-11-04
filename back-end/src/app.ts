@@ -12,6 +12,7 @@ const start = async () => {
     try {
         FastifyServer.listen({
             port: parseInt(process.env.SERVER_PORT) ?? 3000,
+            host: '0.0.0.0'
         }, (err) => {
             if(err) throw new Error(err.message);
 
