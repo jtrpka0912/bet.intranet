@@ -1,15 +1,10 @@
 import './App.module.css';
-import Button from './common/button/Button';
+import ParticipantCheckbox from './common/field/participant-checkbox/ParticipantCheckbox';
 
 const App = () => {
   return (
     <div>
-      <Button 
-        color="secondary" 
-        size="large" 
-        title="Hello World"
-        onClick={() => {console.info('Hello World')}}
-      >Hello World</Button>  
+      <ParticipantCheckbox />
     </div>
     
   )

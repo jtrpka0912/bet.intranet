@@ -1,0 +1,29 @@
+.participantCheckbox {
+    display: block;
+    overflow: hidden;
+
+    input {
+        margin-top: -16px;
+        display: block;
+
+        & + .participantCheckbox_clickzone {
+            background-color: red;
+        }
+
+        &:checked + .participantCheckbox_clickzone {
+            background-color: green;
+        }
+    }
+
+    .participantCheckbox_clickzone {
+        display: flex;
+        flex-flow: column-reverse nowrap;
+        align-items: center;
+        height: 10rem;
+        padding: 1rem;
+
+        .participantCheckbox_clickzone_participant {
+            font-size: 1.2em;
+        }
+    }
+}
