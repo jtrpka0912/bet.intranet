@@ -4,7 +4,12 @@ import Button from './common/button/Button';
 const App = () => {
   return (
     <div>
-      <Button color="secondary" size="large" title="Hello World">Hello World</Button>  
+      <Button 
+        color="secondary" 
+        size="large" 
+        title="Hello World"
+        onClick={() => {console.info('Hello World')}}
+      >Hello World</Button>  
     </div>
     
   )

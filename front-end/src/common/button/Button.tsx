@@ -13,6 +13,7 @@ const Button = ({
     size = 'medium',
     title,
     disabled = false,
+    onClick,
     children 
 }: ButtonProps): JSX.Element => {
 
@@ -66,6 +67,7 @@ const Button = ({
             title={title}
             disabled={disabled ? true : undefined}
             aria-disabled={disabled ? true : undefined}
+            onClick={onClick}
         >{ children }</button>
     );
 };

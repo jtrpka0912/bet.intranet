@@ -5,5 +5,6 @@ export type ButtonProps = {
     size?: 'small' | 'medium' | 'large';
     title?: string;
     disabled?: boolean;
+    onClick: () => void;
     children: React.ReactNode;
 }
