@@ -47,14 +47,21 @@ table {
 }
 
 :root {
+    --darkText: #333;
+    --lightText: #ccc;
+
+    /* https://colorkit.co/palette/edf2fa-d7e3fc-ccdbfd-c1d3fe-abc4ff/ */
     --firstSnow: #edf2fa;
     --cloudless: #d7e3fc;
     --icyPlains: #ccdbfd;
     --ohBoy: #c1d3fe;
     --nightSnow: #abc4ff;
+
+    /* Contrast text colors for the five palette colors */
+    --nightSnowContrast: var(--darkText); 
 }
 
 * {
     box-sizing: border-box;
-    color: #333333;
+    color: var(--darkText);
 }
