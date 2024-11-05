@@ -78,3 +78,7 @@ table {
 * {
     box-sizing: border-box;
 }
+
+body {
+    background-color: var(--firstSnow);
+}
