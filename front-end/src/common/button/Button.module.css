@@ -1,9 +1,7 @@
 .button {
     cursor: pointer;
-    padding: 0.25rem 2rem;
     border: 0;
     border-radius: 0.25rem;
-    font-size: 1.2em;
 
     &.button__primary {
         background-color: var(--nightSnow);
@@ -17,5 +15,21 @@
 
     &.button__danger {
         background-color: var(--danger);
+        color: var(--dangerContrast);
+    }
+
+    &.button__large { 
+        padding: 1rem 3rem;
+        font-size: 1.2em;
+    }
+    
+    &.button__medium { 
+        padding: 0.5rem 2rem;
+        font-size: 1.0em;
+    }
+    
+    &.button__small { 
+        padding: 0.25rem 1rem;
+        font-size: 0.8em;
     }
 }

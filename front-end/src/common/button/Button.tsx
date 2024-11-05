@@ -10,6 +10,7 @@ import { ButtonProps } from './Button.types';
  */
 const Button = ({ 
     color = 'primary',
+    size = 'medium',
     children 
 }: ButtonProps): JSX.Element => {
 
@@ -29,13 +30,32 @@ const Button = ({
     }
 
     /**
+     * @function generateSizeClass
+     * @description Get the size class for the button sizes
+     * @author J. Trpka
+     * @returns {string}
+     */
+    const generateSizeClass = (): string => {
+        switch(size) {
+            case 'large': return S.button__large;
+            case 'small': return S.button__small;
+            case 'medium':
+            default: return S.button__medium;
+        }
+    }
+
+    /**
      * @function generateClasses
      * @description Generate the string of classes from the other generators
      * @author J. Trpka
      * @returns {string}
      */
     const generateClasses = (): string => {
-        return [S.button, generateColorClass()].join(' ');
+        return [
+            S.button, 
+            generateColorClass(),
+            generateSizeClass()
+        ].join(' ');
     }
 
     return (
