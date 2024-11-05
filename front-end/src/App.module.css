@@ -49,6 +49,7 @@ table {
 :root {
     --darkText: #333;
     --lightText: #ccc;
+    --disabledText: #454545;
 
     /* https://colorkit.co/palette/edf2fa-d7e3fc-ccdbfd-c1d3fe-abc4ff/ */
     --firstSnow: #edf2fa;
@@ -60,6 +61,7 @@ table {
     /* Utility Colors */
     --danger: #8b0000;
     --warning: #F6BE00;
+    --disabled: #ddd;
 
     /* Contrast text colors for the five palette colors */
     --nightSnowContrast: var(--darkText); 
@@ -70,6 +72,7 @@ table {
     /* Contrast text colors for the utility colors */
     --dangerContrast: var(--lightText);
     --warningContrast: var(--lightText);
+    --disabledContrast: var(--disabledText);
 }
 
 * {

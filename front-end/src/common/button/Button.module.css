@@ -32,4 +32,10 @@
         padding: 0.25rem 1rem;
         font-size: 0.8em;
     }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: var(--disabled);
+        color: var(--disabledContrast);
+    }
 }

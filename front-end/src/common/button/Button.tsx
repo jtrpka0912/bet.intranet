@@ -11,6 +11,7 @@ import { ButtonProps } from './Button.types';
 const Button = ({ 
     color = 'primary',
     size = 'medium',
+    disabled = false,
     children 
 }: ButtonProps): JSX.Element => {
 
@@ -59,7 +60,11 @@ const Button = ({
     }
 
     return (
-        <button className={generateClasses()}>{ children }</button>
+        <button 
+            className={generateClasses()}
+            disabled={disabled ? true : undefined}
+            aria-disabled={disabled ? true : undefined}
+        >{ children }</button>
     );
 };
 
