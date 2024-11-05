@@ -1,6 +1,6 @@
 .participantCheckbox {
     display: block;
-    width: 10rem;
+    max-width: 10rem;
     overflow: hidden;
 
     input {
