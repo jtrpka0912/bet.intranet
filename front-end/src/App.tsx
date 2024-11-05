@@ -4,7 +4,7 @@ import Button from './common/button/Button';
 const App = () => {
   return (
     <div>
-      <Button>Hello World</Button>  
+      <Button color="secondary">Hello World</Button>  
     </div>
     
   )

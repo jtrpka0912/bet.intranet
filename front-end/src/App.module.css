@@ -57,8 +57,19 @@ table {
     --ohBoy: #c1d3fe;
     --nightSnow: #abc4ff;
 
+    /* Utility Colors */
+    --danger: #8b0000;
+    --warning: #F6BE00;
+
     /* Contrast text colors for the five palette colors */
     --nightSnowContrast: var(--darkText); 
+    --icyPlainsContrast: var(--darkText);
+    --ohBoyContrast: var(--darkText);
+    --cloudlessContrast: var(--darkText);
+
+    /* Contrast text colors for the utility colors */
+    --dangerContrast: var(--lightText);
+    --warningContrast: var(--lightText);
 }
 
 * {

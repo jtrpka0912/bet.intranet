@@ -1,8 +1,21 @@
 .button {
     cursor: pointer;
     padding: 0.25rem 2rem;
-    background-color: var(--nightSnow);
     border: 0;
     border-radius: 0.25rem;
     font-size: 1.2em;
+
+    &.button__primary {
+        background-color: var(--nightSnow);
+        color: var(--nightSnowContrast);
+    }
+
+    &.button__secondary {
+        background-color: var(--cloudless);
+        color: var(--cloudlessContrast);
+    }
+
+    &.button__danger {
+        background-color: var(--danger);
+    }
 }

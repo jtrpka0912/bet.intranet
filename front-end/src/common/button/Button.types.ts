@@ -1,5 +1,6 @@
 import React from "react"
 
 export type ButtonProps = {
-    children: React.ReactNode
+    color?: 'primary' | 'secondary' | 'danger';
+    children: React.ReactNode;
 }
