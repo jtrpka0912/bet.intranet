@@ -1,8 +1,47 @@
 .button {
     cursor: pointer;
-    padding: 0.25rem 2rem;
-    background-color: var(--nightSnow);
     border: 0;
     border-radius: 0.25rem;
-    font-size: 1.2em;
+
+    &.button__primary {
+        background-color: var(--nightSnow);
+        color: var(--nightSnowContrast);
+    }
+
+    &.button__secondary {
+        background-color: var(--cloudless);
+        color: var(--cloudlessContrast);
+    }
+
+    &.button__danger {
+        background-color: var(--danger);
+        color: var(--dangerContrast);
+    }
+
+    &.button__full {
+        width: 100%;
+        padding: 1rem 0;
+        font-size: 1.2em;
+    }
+
+    &.button__large { 
+        padding: 1rem 3rem;
+        font-size: 1.2em;
+    }
+    
+    &.button__medium { 
+        padding: 0.5rem 2rem;
+        font-size: 1.0em;
+    }
+    
+    &.button__small { 
+        padding: 0.25rem 1rem;
+        font-size: 0.8em;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: var(--disabled);
+        color: var(--disabledContrast);
+    }
 }

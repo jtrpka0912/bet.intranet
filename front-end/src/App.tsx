@@ -4,10 +4,15 @@ import Button from './common/button/Button';
 const App = () => {
   return (
     <div>
-      <Button />  
+      <Button 
+        color="secondary" 
+        size="large" 
+        title="Hello World"
+        onClick={() => {console.info('Hello World')}}
+      >Hello World</Button>  
     </div>
     
   )
 }
 
-export default App
+export default App;
