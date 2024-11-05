@@ -1,6 +1,12 @@
+import './App.module.css';
+import Button from './common/button/Button';
+
 const App = () => {
   return (
-    <h1>Hello World</h1>
+    <div>
+      <Button />  
+    </div>
+    
   )
 }
 

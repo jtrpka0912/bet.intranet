@@ -1,0 +1,8 @@
+.button {
+    cursor: pointer;
+    padding: 0.25rem 2rem;
+    background-color: var(--nightSnow);
+    border: 0;
+    border-radius: 0.25rem;
+    font-size: 1.2em;
+}
