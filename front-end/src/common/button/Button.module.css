@@ -18,6 +18,12 @@
         color: var(--dangerContrast);
     }
 
+    &.button__full {
+        width: 100%;
+        padding: 1rem 0;
+        font-size: 1.2em;
+    }
+
     &.button__large { 
         padding: 1rem 3rem;
         font-size: 1.2em;

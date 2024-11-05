@@ -40,6 +40,7 @@ const Button = ({
      */
     const generateSizeClass = (): string => {
         switch(size) {
+            case 'full': return S.button__full;
             case 'large': return S.button__large;
             case 'small': return S.button__small;
             case 'medium':
