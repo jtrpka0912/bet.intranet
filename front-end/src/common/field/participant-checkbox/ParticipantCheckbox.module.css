@@ -1,4 +1,5 @@
 .participantCheckbox {
+    cursor: pointer;
     display: block;
     max-width: 10rem;
     overflow: hidden;

@@ -4,7 +4,8 @@ import ParticipantCheckbox from './common/field/participant-checkbox/Participant
 const App = () => {
   return (
     <div>
-      <ParticipantCheckbox />
+      <ParticipantCheckbox participant="Jeremy" />
+      <ParticipantCheckbox participant="Hidemi" />
     </div>
     
   )
