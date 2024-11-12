@@ -9,22 +9,35 @@
 
         & + .participantCheckbox_clickzone {
             background-color: red;
+
+            .participantCheckbox_clickzone_won::after {
+                content: 'Not Win';
+            }
         }
 
         &:checked + .participantCheckbox_clickzone {
             background-color: green;
+
+            .participantCheckbox_clickzone_won::after {
+                content: 'Won';
+            }
         }
     }
 
     .participantCheckbox_clickzone {
         display: flex;
-        flex-flow: column-reverse nowrap;
+        flex-flow: column nowrap;
+        justify-content: flex-end;
         align-items: center;
         height: 10rem;
         padding: 1rem;
 
         .participantCheckbox_clickzone_participant {
             font-size: 1.2em;
+        }
+
+        .participantCheckbox_clickzone_won {
+            margin-top: 0.5rem;
         }
     }
 }

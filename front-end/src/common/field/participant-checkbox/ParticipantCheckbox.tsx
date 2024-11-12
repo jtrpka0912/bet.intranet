@@ -12,6 +12,7 @@ const ParticipantCheckbox = (): JSX.Element => {
             <input type="checkbox" />
             <div className={S.participantCheckbox_clickzone}>
                 <p className={S.participantCheckbox_clickzone_participant}>Hello World</p>
+                <p className={S.participantCheckbox_clickzone_won}>Did </p>
             </div>
         </label>
     );
