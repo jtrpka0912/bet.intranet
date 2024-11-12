@@ -81,4 +81,5 @@ table {
 
 body {
     background-color: var(--firstSnow);
+    font-family: "Noto Sans", sans-serif;
 }
