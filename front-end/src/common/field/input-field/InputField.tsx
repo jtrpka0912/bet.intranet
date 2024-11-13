@@ -9,6 +9,7 @@ import S from './InputField.module.css';
 const InputField = () => {
     return (
         <div className={S.inputField}>
+            <label>This is a label</label>
             <input type="text" />
         </div>
     );
