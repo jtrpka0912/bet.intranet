@@ -1,0 +1,11 @@
+.inputField {
+    input, textarea, select {
+        width: 95%;
+        padding: 0.5rem 1.0rem;
+        background-color: var(--cloudless);
+        border: 1px solid var(--darkText);
+        border-radius: 0.25rem;
+        color: var(--cloudlessContrast);
+        font-size: 1.3em;
+    }
+}
