@@ -3,6 +3,7 @@
     flex-flow: column nowrap;
     gap: 1.0rem;
     justify-content: center;
+    height: 100vh;
     padding: 1.0rem;
 
     @media (min-width: 720px) {
