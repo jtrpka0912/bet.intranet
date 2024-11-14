@@ -14,10 +14,10 @@
     input, textarea, select {
         width: 100%;
         padding: 0.5rem 1.0rem;
-        background-color: var(--cloudless);
-        border: 1px solid var(--darkText);
+        background-color: var(--icyPlains);
+        border: 1px solid var(--icyPlainsContrast);
         border-radius: 0.5rem;
-        color: var(--cloudlessContrast);
+        color: var(--icyPlainsContrast);
         font-size: 1.3em;
     }
 

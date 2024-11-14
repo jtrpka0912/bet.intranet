@@ -74,6 +74,8 @@ table {
     --dangerContrast: var(--lightText);
     --warningContrast: var(--lightText);
     --disabledContrast: var(--disabledText);
+
+    --shadow: 0.25rem 0.25rem 0.5rem #000000cc;
 }
 
 * {
@@ -81,6 +83,6 @@ table {
 }
 
 body {
-    background-color: var(--firstSnow);
+    background-color: var(--cloudless);
     font-family: "Noto Sans", sans-serif;
 }

@@ -1,0 +1,7 @@
+.panel {
+    padding: 2rem;
+    background-color: var(--firstSnow);
+    border: 3px solid var(--nightSnow);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+}

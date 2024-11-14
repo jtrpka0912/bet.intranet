@@ -1,21 +1,21 @@
-import { useState } from 'react';
 import './App.module.css';
 import InputField from './common/field/input-field/InputField';
+import Panel from './common/panel/Panel';
 
 const App = () => {
-  const [sample, setSample] = useState('');
 
   return (
     <div>
-      <InputField 
-        type="textarea"
-        label="Sample"
-        name="sample"
-        id="sample"
-        required={true}
-        value={sample}
-        onChange={(e) => {setSample(e.target.value)}}
-      />
+      <Panel>
+        <InputField 
+          type="text"
+          label="Sample"
+          name="sample"
+          id="sample"
+          value="Sample"
+          onChange={() => {}}
+        />
+      </Panel>
     </div>
     
   )
