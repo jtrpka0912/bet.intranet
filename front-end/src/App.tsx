@@ -9,7 +9,8 @@ const App = () => {
         label="Sample"
         name="sample"
         id="sample"
-        required={true} 
+        required={true}
+        error="This has an error"
       />
     </div>
     

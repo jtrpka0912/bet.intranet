@@ -3,6 +3,7 @@ type InputFieldProps = {
     label: string;
     name: string;
     id: string;
+    error?: string;
     required?: boolean;
 };
 

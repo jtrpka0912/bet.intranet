@@ -1,4 +1,10 @@
 .inputField {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1.0rem;
+    align-items: center;
+    width: 100%;
+
     label {
         display: block;
         padding-bottom: 0.5rem;
@@ -10,8 +16,35 @@
         padding: 0.5rem 1.0rem;
         background-color: var(--cloudless);
         border: 1px solid var(--darkText);
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
         color: var(--cloudlessContrast);
         font-size: 1.3em;
+    }
+
+    & .inputField_wrapper {
+        width: 100%;
+    }
+
+    &.inputField__error {
+        color: var(--danger);
+
+        input, textarea, select {
+            border: 2px solid var(--danger);
+        }
+
+        & .inputField_errorIcon {
+            font-size: 2.0em;
+        }
+
+        & .inputField_wrapper {
+            padding-left: 1.0rem;
+            border-left: 2px solid var(--danger);
+            
+            font-weight: 600;
+        }
+    }
+
+    & .inputField_errorMessage {
+        padding-top: 0.5rem;
     }
 }
