@@ -13,14 +13,15 @@ const InputField = ({
     label,
     name,
     id,
+    value,
     error,
-    required
+    required,
+    onChange
 }: InputFieldProps) => {
     return (
         <div className={`${S.inputField} ${error ? S.inputField__error : null}`}>
             { error ? (
                 <div className={S.inputField_errorIcon}>
-                    X
                 </div>
             ) : null }
 
@@ -31,8 +32,10 @@ const InputField = ({
                     type={type} 
                     name={name}
                     id={id}
+                    value={value}
                     required={required ? true : undefined}
                     aria-required={required ? true : undefined}
+                    onChange={onChange}
                 />
 
                 { error ? (
