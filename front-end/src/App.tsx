@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div>
       <InputField 
-        type="text"
+        type="textarea"
         label="Sample"
         name="sample"
         id="sample"

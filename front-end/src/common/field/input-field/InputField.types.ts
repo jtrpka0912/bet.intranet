@@ -8,7 +8,16 @@ export type InputProps = {
     required?: boolean;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-}
+};
+
+export type TextAreaProps = {
+    name: string;
+    id: string;
+    error?: string;
+    required?: boolean;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+};
 
 type InputFieldProps = {
     type: 'text' | 'textarea';

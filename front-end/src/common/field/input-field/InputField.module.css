@@ -21,6 +21,10 @@
         font-size: 1.3em;
     }
 
+    textarea {
+        height: 5rem;
+    }
+
     & .inputField_wrapper {
         width: 100%;
     }

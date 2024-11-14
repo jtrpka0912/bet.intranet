@@ -1,5 +1,5 @@
 import S from './InputField.module.css';
-import InputFieldProps, { InputProps } from './InputField.types';
+import InputFieldProps, { InputProps, TextAreaProps } from './InputField.types';
 
 /**
  * @function Input
@@ -30,6 +30,32 @@ const Input = ({
 }
 
 /**
+ * @function TextArea
+ * @description The simple text area field
+ * @author J. Trpka
+ * @param {InputProps} props 
+ * @returns {JSX.Element}
+ */
+const TextArea = ({
+    name,
+    id,
+    value,
+    required,
+    onChange
+}: TextAreaProps) => {
+    return (
+        <textarea 
+            name={name}
+            id={id}
+            value={value}
+            required={required ? true : undefined}
+            aria-required={required ? true : undefined}
+            onChange={onChange}
+        />
+    );
+};
+
+/**
  * @function InputField
  * @description An input field that can be an input, textarea, or a select drop down
  * @author J. Trpka
@@ -49,7 +75,13 @@ const InputField = ({
     const RenderField = () => {
         switch(type) {
             case 'textarea':
-                return null;
+                return <TextArea 
+                    name={name}
+                    id={id}
+                    value={value}
+                    required={required}
+                    onChange={onChange}
+                />;
             case 'text':
             default:
                 return <Input 
