@@ -1,5 +1,33 @@
 import S from './InputField.module.css';
-import InputFieldProps from './InputField.types';
+import InputFieldProps, { InputProps } from './InputField.types';
+
+/**
+ * @function Input
+ * @description The simple input field with variable type
+ * @author J. Trpka
+ * @param {InputProps} props 
+ * @returns {JSX.Element}
+ */
+const Input = ({
+    type,
+    name,
+    id,
+    value,
+    required,
+    onChange
+}: InputProps) => {
+    return (
+        <input 
+            type={type} 
+            name={name}
+            id={id}
+            value={value}
+            required={required ? true : undefined}
+            aria-required={required ? true : undefined}
+            onChange={onChange}
+        />
+    )
+}
 
 /**
  * @function InputField
@@ -18,6 +46,23 @@ const InputField = ({
     required,
     onChange
 }: InputFieldProps) => {
+    const RenderField = () => {
+        switch(type) {
+            case 'textarea':
+                return null;
+            case 'text':
+            default:
+                return <Input 
+                    type={type}
+                    name={name}
+                    id={id}
+                    value={value}
+                    required={required}
+                    onChange={onChange}
+                />
+        }
+    }
+
     return (
         <div className={`${S.inputField} ${error ? S.inputField__error : null}`}>
             { error ? (
@@ -28,15 +73,7 @@ const InputField = ({
             <div className={S.inputField_wrapper}>
                 <label htmlFor={id}>{label} { required ? <span className={S.inputField_asterick}>*</span> : null }</label>
 
-                <input 
-                    type={type} 
-                    name={name}
-                    id={id}
-                    value={value}
-                    required={required ? true : undefined}
-                    aria-required={required ? true : undefined}
-                    onChange={onChange}
-                />
+                <RenderField />
 
                 { error ? (
                     <p className={S.inputField_errorMessage}>{error}</p>

@@ -1,7 +1,17 @@
 import React from "react";
 
+export type InputProps = {
+    type: 'text' | 'textarea';
+    name: string;
+    id: string;
+    error?: string;
+    required?: boolean;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+}
+
 type InputFieldProps = {
-    type: string;
+    type: 'text' | 'textarea';
     label: string;
     name: string;
     id: string;
