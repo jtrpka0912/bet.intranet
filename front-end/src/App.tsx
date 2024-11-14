@@ -1,24 +1,14 @@
 import './App.module.css';
-import InputField from './common/field/input-field/InputField';
-import Panel from './common/panel/Panel';
+import Layout from './components/layout/Layout';
 
+/**
+ * @function App
+ * @description The main application component
+ * @author J. Trpka
+ * @returns {JSX.Element}
+ */
 const App = () => {
-
-  return (
-    <div>
-      <Panel>
-        <InputField 
-          type="text"
-          label="Sample"
-          name="sample"
-          id="sample"
-          value="Sample"
-          onChange={() => {}}
-        />
-      </Panel>
-    </div>
-    
-  )
+  return <Layout />
 }
 
 export default App;

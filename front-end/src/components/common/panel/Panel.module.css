@@ -1,5 +1,6 @@
 .panel {
     padding: 2rem;
+    height: 100%;
     background-color: var(--firstSnow);
     border: 3px solid var(--nightSnow);
     border-radius: 1rem;
