@@ -68,6 +68,7 @@ table {
     --icyPlainsContrast: var(--darkText);
     --ohBoyContrast: var(--darkText);
     --cloudlessContrast: var(--darkText);
+    --firstSnowContrast: var(--darkText);
 
     /* Contrast text colors for the utility colors */
     --dangerContrast: var(--lightText);
