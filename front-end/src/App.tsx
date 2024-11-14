@@ -4,7 +4,13 @@ import InputField from './common/field/input-field/InputField';
 const App = () => {
   return (
     <div>
-      <InputField required={true} />
+      <InputField 
+        type="text"
+        label="Sample"
+        name="sample"
+        id="sample"
+        required={true} 
+      />
     </div>
     
   )

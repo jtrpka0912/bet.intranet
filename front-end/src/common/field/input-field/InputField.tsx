@@ -9,13 +9,19 @@ import InputFieldProps from './InputField.types';
  * @returns {JSX.Element} 
  */
 const InputField = ({
+    type = "text",
+    label,
+    name,
+    id,
     required
 }: InputFieldProps) => {
     return (
         <div className={S.inputField}>
-            <label>This is a label { required ? <span className={S.inputField_asterick}>*</span> : null }</label>
+            <label htmlFor={id}>{label} { required ? <span className={S.inputField_asterick}>*</span> : null }</label>
             <input 
-                type="text" 
+                type={type} 
+                name={name}
+                id={id}
                 required={required ? true : undefined}
                 aria-required={required ? true : undefined}
             />

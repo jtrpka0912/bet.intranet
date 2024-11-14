@@ -1,5 +1,9 @@
 type InputFieldProps = {
-    required?: boolean
+    type: string;
+    label: string;
+    name: string;
+    id: string;
+    required?: boolean;
 };
 
 export default InputFieldProps;
