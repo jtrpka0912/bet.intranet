@@ -11,8 +11,26 @@ import { retrieveBets } from './api/bets';
  */
 const App = () => {
   React.useEffect(() => {
-    retrieveBets();
+    retrievePaginatedBets();
   }, []);
+
+  /**
+   * @async
+   * @function retrievePaginatedBets
+   * @description Retrieve a paginated amount of bets
+   * @author J. Trpka
+   * @param {number} page 
+   * @param {number} limit 
+   */
+  const retrievePaginatedBets = async (page: number = 0, limit: number = 20) => {
+    try {
+      const response = await retrieveBets(page, limit);
+
+      console.info(response);
+    } catch(e) {
+      console.error(e);
+    }
+  }
 
   return <Layout />
 }
