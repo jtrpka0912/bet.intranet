@@ -1,5 +1,7 @@
+import React from 'react';
 import './App.module.css';
 import Layout from './components/layout/Layout';
+import { retrieveBets } from './api/bets';
 
 /**
  * @function App
@@ -8,6 +10,10 @@ import Layout from './components/layout/Layout';
  * @returns {JSX.Element}
  */
 const App = () => {
+  React.useEffect(() => {
+    retrieveBets();
+  }, []);
+
   return <Layout />
 }
 
