@@ -1,4 +1,5 @@
 import fastify, { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import cors from '@fastify/cors';
 import postgresClientPlugin from './plugins/postgres-client';
 import BettingRoutes from './routes/bets';
 import ResponseDTO from "./models/dtos/response";
@@ -9,8 +10,14 @@ const server: FastifyInstance = fastify({
 
 server.register(postgresClientPlugin);
 
+// TODO: This was added for IDX
+server.register(cors, {
+    origin: true,
+    methods: ['GET', 'POST', 'PATCH']
+})
+
 server.register(BettingRoutes, {
-    prefix: '/v1/bets'
+    prefix: '/api/v1/bets'
 });
 
 server.addHook('onClose', async (instance: FastifyInstance) => {
