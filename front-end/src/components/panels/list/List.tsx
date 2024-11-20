@@ -56,7 +56,7 @@ const BetList = ({
     bets = []
 }: BetListProps) => {
     return (
-        <ul>
+        <ul className={S.list}>
             {bets.map((bet: BetResponseDTO) => {
                 return (
                     <BetItem key={bet.id} bet={bet} />
