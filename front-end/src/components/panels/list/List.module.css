@@ -18,6 +18,16 @@
         }
     }
 
+    .listItem__actions {
+        display: flex;
+        flex-flow: row-reverse nowrap;
+        gap: 1.0rem;
+
+        @container (min-width: 500px) {
+            flex-flow: row nowrap;
+        }
+    }
+
     .listItem__winners {
         display: flex;
         flex-flow: row nowrap;

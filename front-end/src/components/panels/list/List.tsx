@@ -25,28 +25,30 @@ const BetItem = ({
                 className={`${S.listItem__header} ${bet.completedAt ? S.listItem__header_completed : ''}`}
             >{bet.stipulation}</h2>
 
-            <div className={S.listItem__winners}>
-                {bet.jeremyWon ? (<span>J</span>) : null}
-                {bet.hidemiWon ? (<span>H</span>) : null}
-                {!bet.jeremyWon && !bet.hidemiWon ? (
-                    <span className={S.listItem__winners__noWinner}>X</span>
-                ) : null}
-            </div>
+            <div className={S.listItem__actions}>
+                <div className={S.listItem__winners}>
+                    {bet.jeremyWon ? (<span>J</span>) : null}
+                    {bet.hidemiWon ? (<span>H</span>) : null}
+                    {!bet.jeremyWon && !bet.hidemiWon ? (
+                        <span className={S.listItem__winners__noWinner}>X</span>
+                    ) : null}
+                </div>
 
-            <div className={S.listItem__buttons}>
-                <Button 
-                    color="primary"
-                    size="small"
-                    onClick={() => console.info(bet)}
-                >Detail</Button>
-
-                {!bet.completedAt ? (
+                <div className={S.listItem__buttons}>
                     <Button 
-                        color="secondary"
+                        color="primary"
                         size="small"
                         onClick={() => console.info(bet)}
-                    >Complete</Button>
-                ) : null}
+                    >Detail</Button>
+
+                    {!bet.completedAt ? (
+                        <Button 
+                            color="secondary"
+                            size="small"
+                            onClick={() => console.info(bet)}
+                        >Complete</Button>
+                    ) : null}
+                </div>
             </div>
         </li>
     );
