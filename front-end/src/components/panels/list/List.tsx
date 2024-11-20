@@ -7,7 +7,6 @@ import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
 import Button from '../../common/button/Button';
-import { jsx } from 'react/jsx-runtime';
 
 /**
  * @function BetItem
