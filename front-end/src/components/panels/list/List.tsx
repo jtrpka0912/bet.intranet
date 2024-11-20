@@ -1,4 +1,5 @@
 import React from 'react';
+import S from './List.module.css';
 import BetResponseDTO from '../../../dto/bet-response';
 import Panel from '../../common/panel/Panel';
 import { BetItemProps, BetListProps } from './List.types';
@@ -17,7 +18,7 @@ const BetItem = ({
     bet
 }: BetItemProps) => {
     return (
-        <li>
+        <li className={S.listItem}>
             <h2>{bet.stipulation}</h2>
         </li>
     );
