@@ -12,6 +12,12 @@
         align-items: center;
     }
 
+    .listItem__header {
+        &.listItem__header_completed {
+            text-decoration: line-through;
+        }
+    }
+
     .listItem__winners {
         display: flex;
         flex-flow: row nowrap;
@@ -25,8 +31,15 @@
 
             width: 2.0rem;
             height: 2.0rem;
-            background-color: red;
+            background-color: var(--nightSnow);
             border-radius: 50%;
+            color: var(--nightSnowContrast);
+            line-height: 1.0em;
+
+            &.listItem__winners__noWinner {
+                background-color: var(--danger);
+                color: var(--dangerContrast);
+            }
         }
     }
 

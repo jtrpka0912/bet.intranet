@@ -7,6 +7,7 @@ import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
 import Button from '../../common/button/Button';
+import { jsx } from 'react/jsx-runtime';
 
 /**
  * @function BetItem
@@ -20,12 +21,16 @@ const BetItem = ({
 }: BetItemProps) => {
     return (
         <li className={S.listItem}>
-            <h2>{bet.stipulation}</h2>
+            <h2
+                className={`${S.listItem__header} ${bet.completedAt ? S.listItem__header_completed : ''}`}
+            >{bet.stipulation}</h2>
 
             <div className={S.listItem__winners}>
-                <span>J</span>
-                <span>H</span>
-                <span>X</span>
+                {bet.jeremyWon ? (<span>J</span>) : null}
+                {bet.hidemiWon ? (<span>H</span>) : null}
+                {!bet.jeremyWon && !bet.hidemiWon ? (
+                    <span className={S.listItem__winners__noWinner}>X</span>
+                ) : null}
             </div>
 
             <div className={S.listItem__buttons}>
@@ -35,11 +40,13 @@ const BetItem = ({
                     onClick={() => console.info(bet)}
                 >Detail</Button>
 
-                <Button 
-                    color="secondary"
-                    size="small"
-                    onClick={() => console.info(bet)}
-                >Complete</Button>
+                {!bet.completedAt ? (
+                    <Button 
+                        color="secondary"
+                        size="small"
+                        onClick={() => console.info(bet)}
+                    >Complete</Button>
+                ) : null}
             </div>
         </li>
     );
