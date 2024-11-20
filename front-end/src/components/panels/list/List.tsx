@@ -6,6 +6,7 @@ import { BetItemProps, BetListProps } from './List.types';
 import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
+import Button from '../../common/button/Button';
 
 /**
  * @function BetItem
@@ -20,6 +21,26 @@ const BetItem = ({
     return (
         <li className={S.listItem}>
             <h2>{bet.stipulation}</h2>
+
+            <div className={S.listItem__winners}>
+                <span>J</span>
+                <span>H</span>
+                <span>X</span>
+            </div>
+
+            <div className={S.listItem__buttons}>
+                <Button 
+                    color="primary"
+                    size="small"
+                    onClick={() => console.info(bet)}
+                >Detail</Button>
+
+                <Button 
+                    color="secondary"
+                    size="small"
+                    onClick={() => console.info(bet)}
+                >Complete</Button>
+            </div>
         </li>
     );
 };
