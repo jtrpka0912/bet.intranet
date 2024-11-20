@@ -1,10 +1,27 @@
 import React from 'react';
 import BetResponseDTO from '../../../dto/bet-response';
 import Panel from '../../common/panel/Panel';
-import { BetListProps } from './List.types';
+import { BetItemProps, BetListProps } from './List.types';
 import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
+
+/**
+ * @function BetItem
+ * @description A single bet item for the list
+ * @author J. Trpka
+ * @param {BetResponseDTO} bet
+ * @returns {JSX.Element}
+ */
+const BetItem = ({
+    bet
+}: BetItemProps) => {
+    return (
+        <li>
+            <h2>{bet.stipulation}</h2>
+        </li>
+    );
+};
 
 /**
  * @function BetList
@@ -18,9 +35,9 @@ const BetList = ({
 }: BetListProps) => {
     return (
         <ul>
-            {bets.map((bet: BetResponseDTO, i: number) => {
+            {bets.map((bet: BetResponseDTO) => {
                 return (
-                    <li key={i}>{bet.stipulation}</li>
+                    <BetItem key={bet.id} bet={bet} />
                 )
             })}
         </ul>
