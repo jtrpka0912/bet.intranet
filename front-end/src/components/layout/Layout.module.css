@@ -9,11 +9,11 @@
     @media (min-width: 720px) {
         flex-flow: row nowrap;
 
-        :first-child {
+        & > :first-child {
             flex: 1;
         }
 
-        :last-child {
+        & > :last-child {
             flex: 2;
         }
     }

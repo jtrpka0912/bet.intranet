@@ -1,0 +1,70 @@
+.listItem {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1.0rem 0;
+
+    @container (min-width: 500px) {
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .listItem__header {
+        &.listItem__header_completed {
+            text-decoration: line-through;
+        }
+    }
+
+    .listItem__actions {
+        display: flex;
+        flex-flow: row-reverse nowrap;
+        gap: 1.0rem;
+
+        @container (min-width: 500px) {
+            flex-flow: row nowrap;
+        }
+    }
+
+    .listItem__winners {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 0.25rem;
+
+        span {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
+
+            width: 2.0rem;
+            height: 2.0rem;
+            background-color: var(--nightSnow);
+            border-radius: 50%;
+            color: var(--nightSnowContrast);
+            line-height: 1.0em;
+
+            &.listItem__winners__noWinner {
+                background-color: var(--danger);
+                color: var(--dangerContrast);
+            }
+        }
+    }
+
+    .listItem__buttons {
+        display: flex;
+        flex-flow: row-reverse nowrap;
+        gap: 0.25rem;
+        justify-content: flex-end;
+    }
+}
+
+
+
+.list {
+    display: flex;
+    flex-flow: column nowrap;
+    container-type: inline-size;
+}
