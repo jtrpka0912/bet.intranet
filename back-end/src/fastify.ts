@@ -10,11 +10,15 @@ const server: FastifyInstance = fastify({
 
 server.register(postgresClientPlugin);
 
-// TODO: This was added for IDX
+// This was added for IDX
 server.register(cors, {
-    origin: true,
-    methods: ['GET', 'POST', 'PATCH']
-})
+    origin: '*', // IDX
+    methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+    credentials: false, // If you're using cookies or authentication
+    preflightContinue: false, // Fastify handles preflight automatically
+    optionsSuccessStatus: 204, // Preflight should return 204
+});
 
 server.register(BettingRoutes, {
     prefix: '/api/v1/bets'
