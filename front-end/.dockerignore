@@ -1,0 +1,36 @@
+# Node modules (should be installed fresh in the container)
+node_modules
+
+# Build output (built files are generated in the container)
+dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite cache
+.vite
+
+# Temporary files and directories
+*.temp
+*.tmp
+*.swp
+*.swo
+*.bak
+*.tsbuildinfo
+
+# Local environment files (not needed in production builds)
+.env.local
+.env.development
+.env.test
+.env.*
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE configurations
+.vscode
+.idea
+*.iml
