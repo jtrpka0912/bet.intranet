@@ -2,6 +2,13 @@ import React from "react"
 import S from './Modal.module.css';
 import {ModalHeaderProps, ModalProps} from "./Modal.types";
 
+/**
+ * @function ModalHeader
+ * @description The header for the modal where the title and closing button rest
+ * @author J. Trpka
+ * @param {props} ModalHeaderProps
+ * @returns {JSX.Element}
+ */
 const ModalHeader = ({
     title,
     onClose

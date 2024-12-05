@@ -1,9 +1,17 @@
 .modal {
     position: fixed;
     inset: 0;
-    width: 33vw;
+    width: 90vw;
     margin: auto;
     box-shadow: var(--shadow);
+
+    @media (min-width: 720px) {
+        width: 60vw;
+    }
+
+    @media (min-width: 1080px) {
+        width: 40vw;
+    }
 
     .modal__header {
         padding: 0.5rem;
