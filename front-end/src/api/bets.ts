@@ -4,7 +4,7 @@ import PaginationResponseDTO from "../dto/pagination-response";
 import ResponseDTO from "../dto/response";
 
 // TODO: Change the URL after project is moved out of IDX
-const URL = 'https://3000-idx-makeabet-1730228503135.cluster-pgviq6mvsncnqxx6kr7pbz65v6.cloudworkstations.dev';
+const URL = 'http://localhost:3000';
 const STATUS_OK = 200;
 const STATUS_CREATED = 201;
 

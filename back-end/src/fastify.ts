@@ -12,7 +12,7 @@ server.register(postgresClientPlugin);
 
 // This was added for IDX
 server.register(cors, {
-    origin: '*', // IDX
+    origin: 'http://localhost:5173', // IDX
     methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // If you're using cookies or authentication

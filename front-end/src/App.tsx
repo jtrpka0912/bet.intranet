@@ -17,7 +17,7 @@ const App = () => {
       hidemiAnswer: 'No he won\'t',
       jeremyBets: 'Continue with the next task',
       hidemiBets: 'Fix the problem',
-      endsAt: new Date().toISOString()
+      endsAt: new Date('2025-01-01').toISOString()
     })
   }, [])
   return <Layout />

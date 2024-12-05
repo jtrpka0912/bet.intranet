@@ -26,15 +26,15 @@ services:
       - SERVER_PORT=${SERVER_PORT}
     depends_on:
       - postgres
-  frontend:
-    container_name: bets-frontend
-    build:
-      context: ./front-end
-      dockerfile: Dockerfile
-    ports:
-      - "3001:80"
-    depends_on:
-      - backend
+  # frontend:
+  #   container_name: bets-frontend
+  #   build:
+  #     context: ./front-end
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3001:80"
+  #   depends_on:
+  #     - backend
 
 volumes:
   postgres_data:
