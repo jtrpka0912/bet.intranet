@@ -1,0 +1,33 @@
+.modal {
+    position: fixed;
+    inset: 0;
+    width: 90vw;
+    margin: auto;
+    box-shadow: var(--shadow);
+
+    @media (min-width: 720px) {
+        width: 60vw;
+    }
+
+    @media (min-width: 1080px) {
+        width: 40vw;
+    }
+
+    .modal__header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        padding: 0.5rem;
+        background-color: var(--firstSnowContrast);
+        color: var(--firstSnow);
+        font-size: 1.3em;
+
+        span {
+            cursor: pointer;
+        }
+    }
+
+    .modal__content {
+        padding: 0.5rem;
+    }
+}
