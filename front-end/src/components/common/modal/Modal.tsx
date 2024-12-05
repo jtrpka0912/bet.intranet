@@ -1,4 +1,5 @@
 import React from "react"
+import S from './Modal.module.css';
 import ModalProps from "./Modal.types";
 
 /**
@@ -12,7 +13,11 @@ const Modal = ({isOpen, onClose, children}: ModalProps) => {
     const dialogRef = React.useRef<HTMLDialogElement>(null);
 
     return (
-        <dialog ref={dialogRef} open={isOpen ? true : undefined}>
+        <dialog 
+            className={S.modal}
+            ref={dialogRef} 
+            open={isOpen ? true : undefined}
+        >
             {children}
         </dialog>
     )
