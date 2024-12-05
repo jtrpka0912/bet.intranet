@@ -36,7 +36,7 @@ const App = () => {
   return (
     <main>
       <Layout />
-      <Modal isOpen={modalOpen} onClose={handleOnClose}>
+      <Modal title="Sample" isOpen={modalOpen} onClose={handleOnClose}>
         <p>Hello World</p>
       </Modal>
     </main>

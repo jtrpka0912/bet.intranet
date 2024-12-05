@@ -1,6 +1,17 @@
 import React from "react"
 import S from './Modal.module.css';
-import ModalProps from "./Modal.types";
+import {ModalHeaderProps, ModalProps} from "./Modal.types";
+
+const ModalHeader = ({
+    title,
+    onClose
+}: ModalHeaderProps) => {
+    return (
+        <header className={S.modal__header}>
+            <h2>{title} <span onClick={onClose}>X</span></h2>
+        </header>
+    );
+};
 
 /**
  * @function Modal
@@ -9,7 +20,7 @@ import ModalProps from "./Modal.types";
  * @param {props} ModalProps
  * @returns {JSX.Element}
  */
-const Modal = ({isOpen, onClose, children}: ModalProps) => {
+const Modal = ({title, isOpen, onClose, children}: ModalProps) => {
     const dialogRef = React.useRef<HTMLDialogElement>(null);
 
     /**
@@ -31,7 +42,10 @@ const Modal = ({isOpen, onClose, children}: ModalProps) => {
             onClick={onClose}
         >
             <div onClick={handleOnClickPreventClose}>
-                {children}
+                <ModalHeader title={title} onClose={onClose} />
+                <div className={S.modal__content}>
+                    {children}
+                </div>
             </div>
         </dialog>
     )

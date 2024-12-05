@@ -3,4 +3,16 @@
     inset: 0;
     width: 33vw;
     margin: auto;
+    box-shadow: var(--shadow);
+
+    .modal__header {
+        padding: 0.5rem;
+        background-color: var(--firstSnowContrast);
+        color: var(--firstSnow);
+        font-size: 1.3em;
+    }
+
+    .modal__content {
+        padding: 0.5rem;
+    }
 }
