@@ -12,13 +12,27 @@ import ModalProps from "./Modal.types";
 const Modal = ({isOpen, onClose, children}: ModalProps) => {
     const dialogRef = React.useRef<HTMLDialogElement>(null);
 
+    /**
+     * @function handleOnClickPreventClose
+     * @description Prevent closing the modal when clicking inside the content area.
+     * @event onClick
+     * @author J. Trpka
+     * @param {React.MouseEvent<HTMLDivElement>} e  
+     */
+    const handleOnClickPreventClose = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+    }
+
     return (
         <dialog 
             className={S.modal}
             ref={dialogRef} 
             open={isOpen ? true : undefined}
+            onClick={onClose}
         >
-            {children}
+            <div onClick={handleOnClickPreventClose}>
+                {children}
+            </div>
         </dialog>
     )
 }
