@@ -77,7 +77,7 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
  */
 export const createBet = async (request: CreateBetRequest, reply: FastifyReply) => {
     request.log.info('INFO: Creating a Bet');
-
+    
     const requestBody: BetCreateRequestDTO = request.body;
 
     const endsAt: Date = new Date(requestBody.endsAt);
