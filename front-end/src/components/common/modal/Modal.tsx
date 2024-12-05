@@ -15,7 +15,8 @@ const ModalHeader = ({
 }: ModalHeaderProps) => {
     return (
         <header className={S.modal__header}>
-            <h2>{title} <span onClick={onClose}>X</span></h2>
+            <h2>{title}</h2> 
+            <span onClick={onClose}>X</span>
         </header>
     );
 };

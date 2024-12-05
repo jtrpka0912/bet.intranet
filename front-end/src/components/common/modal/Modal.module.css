@@ -14,10 +14,17 @@
     }
 
     .modal__header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
         padding: 0.5rem;
         background-color: var(--firstSnowContrast);
         color: var(--firstSnow);
         font-size: 1.3em;
+
+        span {
+            cursor: pointer;
+        }
     }
 
     .modal__content {
