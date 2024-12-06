@@ -13,8 +13,6 @@ import InputField from '../common/field/input-field/InputField';
 const Layout = () => {
     const [sample, setSample] = React.useState('');
 
-    console.info(sample);
-
     return (
         <main className={S.layout}>
             <ListPanel />
