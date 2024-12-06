@@ -1,33 +1,29 @@
 import React from "react";
 
-export type InputProps = {
-    type: 'text' | 'textarea';
-    name: string;
+export type InputFieldProps = {
     id: string;
-    error?: string;
     required?: boolean;
+    children: React.ReactNode;
+}
+
+export type InputFieldContextProps = {
+    id: string;
+    required?: boolean;
+}
+
+export type InputLabelProps = {
+    children: React.ReactNode;
+}
+
+export type InputProps = {
+    type: 'text' | 'datetime-local';
+    name: string;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export type TextAreaProps = {
     name: string;
-    id: string;
-    error?: string;
-    required?: boolean;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
-
-type InputFieldProps = {
-    type: 'text' | 'textarea';
-    label: string;
-    name: string;
-    id: string;
-    error?: string;
-    required?: boolean;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-};
-
-export default InputFieldProps;
