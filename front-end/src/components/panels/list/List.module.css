@@ -61,7 +61,14 @@
     }
 }
 
+.listMessage {
+    margin-top: 1.0rem;
+}
 
+.listError {
+    color: var(--danger);
+    font-style: italic;
+}
 
 .list {
     display: flex;

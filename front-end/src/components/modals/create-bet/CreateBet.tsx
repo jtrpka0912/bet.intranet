@@ -5,6 +5,9 @@ import Modal from "../../common/modal/Modal";
 import {CreateBetModalProps, CreateBetFormProps} from "./CreateBet.types";
 import { createBet } from '../../../api/bets';
 import Button from '../../common/button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import type {RootState} from '../../../store';
+import { failedCreatingBet, processCreatingBet, successCreatingBet } from '../../../reducers/bets';
 
 /**
  * @function CreateBetForm
@@ -13,7 +16,7 @@ import Button from '../../common/button/Button';
  * @param {CreateBetFormProps} props
  * @returns {JSX.Element}
  */
-const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
+const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
   const now = new Date();
   const nextDay = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate() + 1}T00:00:00.0`;
 
@@ -24,6 +27,9 @@ const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
   const [hidemiBets, setHidemiBets] = React.useState('');
   const [endsAt, setEndsAt] = React.useState(nextDay);
 
+  const {isCreating} = useSelector((state: RootState) => state.bets);
+  const dispatch = useDispatch();
+
   /**
    * @async
    * @function handleOnSubmit
@@ -33,9 +39,10 @@ const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
    */
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(processCreatingBet());
 
     try {
-      const possibleErrors = [];
+      const possibleErrors: string[] = [];
 
       if(!stipulation.trim()) possibleErrors.push('Stipulation is required');
       if(!jeremyAnswer.trim()) possibleErrors.push('Jeremy Answer is required');
@@ -47,11 +54,11 @@ const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
       if(now.getTime() > new Date(endsAt).getTime()) possibleErrors.push('Ends at must be greater than now');
 
       if(possibleErrors.length > 0) {
-        onError(possibleErrors[0]);
+        dispatch(failedCreatingBet(possibleErrors[0]));
         return; // Can't rely on throwing an error
       }
 
-      await createBet({
+      const response = await createBet({
         stipulation,
         jeremyAnswer,
         hidemiAnswer,
@@ -60,10 +67,11 @@ const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
         endsAt
       });
 
+      dispatch(successCreatingBet(response.data));
       onSuccess();
     } catch(e) {
       console.error(e);
-      onError('Something went wrong');
+      dispatch(failedCreatingBet('Something went wrong creating a new bet'));
     }
   }
 
@@ -140,7 +148,7 @@ const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
       </InputField>
 
       <div className={S.createBetForm__buttons}>
-        <Button type="submit">Create Bet</Button>
+        <Button type="submit" disabled={isCreating}>{isCreating ? 'Creating Bet' : 'Create Bet'}</Button>
         <Button type="reset" color="danger">Reset Form</Button>
       </div>
       
@@ -156,18 +164,18 @@ const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
  * @returns {JSX.Element}
  */
 const CreateBetModal = ({isOpen, onClose}: CreateBetModalProps) => {
-  const [error, setError] = React.useState('');
-
+  const {creatingError} = useSelector((state: RootState) => state.bets);
+  
   return (
     <Modal 
       title={"Create New Bet"} 
       isOpen={isOpen} 
       onClose={onClose}
     >
-      {error ? (
-        <p className={S.createBetError}>{error}</p>
+      {creatingError ? (
+        <p className={S.createBetError}>{creatingError}</p>
       ) : null}
-      <CreateBetForm onSuccess={onClose} onError={(error) => setError(error)} />
+      <CreateBetForm onSuccess={onClose} />
     </Modal>
   );
 };

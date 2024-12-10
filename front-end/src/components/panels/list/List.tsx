@@ -2,12 +2,15 @@ import React from 'react';
 import S from './List.module.css';
 import BetResponseDTO from '../../../dto/bet-response';
 import Panel from '../../common/panel/Panel';
-import { BetItemProps, BetListProps } from './List.types';
+import { BetItemProps } from './List.types';
 import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
 import Button from '../../common/button/Button';
 import CreateBetModal from '../../modals/create-bet/CreateBet';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../store';
+import { failedRetrievingBets, processRetrievingBets, successRetrievingBets } from '../../../reducers/bets';
 
 /**
  * @function BetItem
@@ -65,9 +68,13 @@ const BetItem = ({
  * @param {BetListProps} props
  * @returns {JSX.Element}
  */
-const BetList = ({
-    bets = []
-}: BetListProps) => {
+const BetList = () => {
+    const {bets} = useSelector((state: RootState) => state.bets);
+
+    if(bets.length === 0) {
+        return <p className={S.listMessage}>No Bets Found</p>
+    }
+
     return (
         <ul className={S.list}>
             {bets.map((bet: BetResponseDTO) => {
@@ -86,11 +93,13 @@ const BetList = ({
  * @returns {JSX.Element}
  */
 const ListPanel = () => {
-    const [bets, setBets] = React.useState<BetResponseDTO[]>([]);
     const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
+    const {isRetrieving, retrievingError} = useSelector((state: RootState) => state.bets);
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         retrievePaginatedBets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     /**
@@ -103,19 +112,20 @@ const ListPanel = () => {
      */
     const retrievePaginatedBets = async (page: number = 0, limit: number = 20) => {
         try {
+            dispatch(processRetrievingBets());
             const response: ResponseDTO<PaginationResponseDTO<BetResponseDTO>> = await retrieveBets(page, limit);
 
             const betItems = response.data.items;
-
+            dispatch(successRetrievingBets(response.data.items));
+        
             // If no bets, then automatically open the create bet modal form
             if(betItems.length === 0) {
                 setIsCreateOpen(true);
             }
 
             // TODO: Take care of the pagination data later.
-
-            setBets(betItems);
         } catch(e) {
+            dispatch(failedRetrievingBets('Something happened retrieving the bets'));
             console.error(e);
         }
     }
@@ -126,8 +136,16 @@ const ListPanel = () => {
                 type="button"
                 onClick={() => setIsCreateOpen(true)} 
             >Create Bet</Button>
+
+            {retrievingError ? (
+                <p className={`${S.listMessage} ${S.listError}`}>{retrievingError}</p>
+            ) : null}
             
-            <BetList bets={bets} />
+            {isRetrieving ? (
+                <p className={S.listMessage}>Retrieving Bets...</p>
+            ) : (
+                <BetList />
+            )}
 
             <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
         </Panel>
