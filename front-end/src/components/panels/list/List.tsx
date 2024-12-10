@@ -25,14 +25,16 @@ const BetItem = ({
             >{bet.stipulation}</h2>
 
             <div className={S.listItem__actions}>
-                <div className={S.listItem__winners}>
-                    {bet.jeremyWon ? (<span>J</span>) : null}
-                    {bet.hidemiWon ? (<span>H</span>) : null}
-                    {!bet.jeremyWon && !bet.hidemiWon ? (
-                        <span className={S.listItem__winners__noWinner}>X</span>
-                    ) : null}
-                </div>
-
+                { bet.completedAt ? (
+                    <div className={S.listItem__winners}>
+                        {bet.jeremyWon ? (<span>J</span>) : null}
+                        {bet.hidemiWon ? (<span>H</span>) : null}
+                        {!bet.jeremyWon && !bet.hidemiWon ? (
+                            <span className={S.listItem__winners__noWinner}>X</span>
+                        ) : null}
+                    </div>
+                ) : null }
+                
                 <div className={S.listItem__buttons}>
                     <Button 
                         color="primary"
