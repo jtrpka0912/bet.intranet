@@ -7,6 +7,7 @@ import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
 import Button from '../../common/button/Button';
+import CreateBetModal from '../../modals/create-bet/CreateBet';
 
 /**
  * @function BetItem
@@ -82,6 +83,7 @@ const BetList = ({
  */
 const ListPanel = () => {
     const [bets, setBets] = React.useState<BetResponseDTO[]>([]);
+    const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         retrievePaginatedBets();
@@ -99,9 +101,16 @@ const ListPanel = () => {
         try {
             const response: ResponseDTO<PaginationResponseDTO<BetResponseDTO>> = await retrieveBets(page, limit);
 
+            const betItems = response.data.items;
+
+            // If no bets, then automatically open the create bet modal form
+            if(betItems.length === 0) {
+                setIsCreateOpen(true);
+            }
+
             // TODO: Take care of the pagination data later.
 
-            setBets(response.data.items);
+            setBets(betItems);
         } catch(e) {
             console.error(e);
         }
@@ -112,7 +121,10 @@ const ListPanel = () => {
             <Button 
                 onClick={() => console.info('Creating Bet')} 
             >Create Bet</Button>
+            
             <BetList bets={bets} />
+
+            <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
         </Panel>
     );
 };
