@@ -7,6 +7,7 @@ import { retrieveBets } from '../../../api/bets';
 import ResponseDTO from '../../../dto/response';
 import PaginationResponseDTO from '../../../dto/pagination-response';
 import Button from '../../common/button/Button';
+import CreateBetModal from '../../modals/create-bet/CreateBet';
 
 /**
  * @function BetItem
@@ -37,6 +38,7 @@ const BetItem = ({
                 
                 <div className={S.listItem__buttons}>
                     <Button 
+                        type="button"
                         color="primary"
                         size="small"
                         onClick={() => console.info(bet)}
@@ -44,6 +46,7 @@ const BetItem = ({
 
                     {!bet.completedAt ? (
                         <Button 
+                            type="button"
                             color="secondary"
                             size="small"
                             onClick={() => console.info(bet)}
@@ -84,6 +87,7 @@ const BetList = ({
  */
 const ListPanel = () => {
     const [bets, setBets] = React.useState<BetResponseDTO[]>([]);
+    const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         retrievePaginatedBets();
@@ -101,9 +105,16 @@ const ListPanel = () => {
         try {
             const response: ResponseDTO<PaginationResponseDTO<BetResponseDTO>> = await retrieveBets(page, limit);
 
+            const betItems = response.data.items;
+
+            // If no bets, then automatically open the create bet modal form
+            if(betItems.length === 0) {
+                setIsCreateOpen(true);
+            }
+
             // TODO: Take care of the pagination data later.
 
-            setBets(response.data.items);
+            setBets(betItems);
         } catch(e) {
             console.error(e);
         }
@@ -111,7 +122,14 @@ const ListPanel = () => {
 
     return (
         <Panel>
+            <Button 
+                type="button"
+                onClick={() => setIsCreateOpen(true)} 
+            >Create Bet</Button>
+            
             <BetList bets={bets} />
+
+            <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
         </Panel>
     );
 };
