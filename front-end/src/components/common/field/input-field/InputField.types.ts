@@ -15,8 +15,13 @@ export type InputLabelProps = {
     children: React.ReactNode;
 }
 
-export type InputProps = {
-    type: 'text' | 'datetime-local';
+export type TextInputProps = {
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export type DateTimeInputProps = {
     name: string;
     value: string;
     min?: string;

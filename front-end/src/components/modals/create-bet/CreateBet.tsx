@@ -69,8 +69,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
     <form className={S.createBetForm} onSubmit={(e) => handleOnSubmit(e)} onReset={handleOnReset}>
       <InputField id="stipulation" required={true}>
         <InputField.Label>Stipulation</InputField.Label>
-        <InputField.Input 
-          type="text"
+        <InputField.TextInput
           name="stipulation"
           value={stipulation}
           onChange={(e) => setStipulation(e.target.value)}
@@ -115,8 +114,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
 
       <InputField id="ends-at" required={true}>
         <InputField.Label>Ends At</InputField.Label>
-        <InputField.Input 
-          type="datetime-local"
+        <InputField.DateTimeInput
           name="ends-at"
           value={endsAt}
           min={`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}T${now.getHours()}:${now.getMinutes() - 1}`}

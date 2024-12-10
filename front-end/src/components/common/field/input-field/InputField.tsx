@@ -1,6 +1,6 @@
 import React from 'react';
 import S from './InputField.module.css';
-import { InputFieldContextProps, InputFieldProps, InputLabelProps, InputProps, TextAreaProps } from './InputField.types';
+import { InputFieldContextProps, InputFieldProps, InputLabelProps, TextInputProps, TextAreaProps, DateTimeInputProps } from './InputField.types';
 
 const InputFieldContext = React.createContext<InputFieldContextProps | null>(null);
 
@@ -20,25 +20,51 @@ const useInputFieldContext = () => {
 }
 
 /**
- * @function Input
- * @description The simple input field with variable type
+ * @function TextInput
+ * @description A simple text input field
  * @author J. Trpka
- * @param {InputProps} props 
+ * @param {TextInputProps} props 
  * @returns {JSX.Element}
  */
-const Input = ({
-    type,
+const TextInput = ({
+    name,
+    value,
+    onChange
+}: TextInputProps) => {
+    const {id, required} = useInputFieldContext();
+
+    return (
+        <input 
+            type="text" 
+            name={name}
+            id={id}
+            value={value}
+            required={required ? true : undefined}
+            aria-required={required ? true : undefined}
+            onChange={onChange}
+        />
+    )
+}
+
+/**
+ * @function DateTimeInput
+ * @description The datetime input field
+ * @author J. Trpka
+ * @param {TextInputProps} props 
+ * @returns {JSX.Element}
+ */
+const DateTimeInput = ({
     name,
     value,
     min,
     max,
     onChange
-}: InputProps) => {
+}: DateTimeInputProps) => {
     const {id, required} = useInputFieldContext();
 
     return (
         <input 
-            type={type} 
+            type="datetime-local" 
             name={name}
             id={id}
             value={value}
@@ -115,7 +141,8 @@ const InputField = ({
 };
 
 InputField.Label = Label;
-InputField.Input = Input;
+InputField.TextInput = TextInput;
+InputField.DateTimeInput = DateTimeInput;
 InputField.TextArea = TextArea;
 
 export default InputField;
