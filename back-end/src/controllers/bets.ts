@@ -80,6 +80,7 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
     
     const requestBody: BetCreateRequestDTO = request.body;
 
+    const now: Date = new Date();
     const endsAt: Date = new Date(requestBody.endsAt);
 
     // Validate the data
@@ -92,8 +93,8 @@ export const createBet = async (request: CreateBetRequest, reply: FastifyReply) 
         .required(new Validate('Ends At', endsAt.toISOString()))
         .greaterThan(
             new Validate('Ends At', endsAt.getTime()), 
-            new Date().getTime(),
-            new Date().toLocaleString()
+            now.getTime(),
+            now.toLocaleString()
         );
 
     if(validator.hasErrors()) {

@@ -15,7 +15,7 @@ import Button from '../../common/button/Button';
  */
 const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
   const now = new Date();
-  const nextDay = `${now.getFullYear()}-${now.getMonth()}-${now.getDate() + 1}T00:00:00.0`;
+  const nextDay = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate() + 1}T00:00:00.0`;
 
   const [stipulation, setStipulation] = React.useState('');
   const [jeremyAnswer, setJeremyAnswer] = React.useState('');

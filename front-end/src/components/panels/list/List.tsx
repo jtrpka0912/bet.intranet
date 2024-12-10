@@ -122,7 +122,7 @@ const ListPanel = () => {
         <Panel>
             <Button 
                 type="button"
-                onClick={() => console.info('Creating Bet')} 
+                onClick={() => setIsCreateOpen(true)} 
             >Create Bet</Button>
             
             <BetList bets={bets} />
