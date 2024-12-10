@@ -24,6 +24,7 @@ class PostgresClient {
         this._pool = new Pool({
             user: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
+            database: process.env.POSTGRES_DATABASE,
             host: 'postgres' // Name of the docker compose database service
         })
     }
@@ -79,11 +80,41 @@ class PostgresClient {
      * @description Run a query with the query string and (if any) values
      * @author J. Trpka
      * @param {string} query 
-     * @param {string[] | null} values 
-     * @returns {Promise<QueryResult>}
+     * @param {string[] | null} values
      */
     query = async (query: string, values?: string[]): Promise<QueryResult> => {
         return this._pool.query(query, values);
+    }
+
+    /**
+     * @function ensureDatabaseExists
+     * @description Initially check if the database exists
+     * @author J. Trpka
+     */
+    static ensureDatabaseExists = async () => {
+        const defaultClient = new Client({
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_PASSWORD,
+            host: 'postgres',
+        });
+        
+        try {
+            await defaultClient.connect();
+
+            const existQuery = "SELECT 1 FROM pg_database WHERE datname = $1";
+
+            const result = await defaultClient.query(existQuery, [process.env.POSTGRES_DATABASE]);
+
+            if(result.rowCount === 0) {
+                const createQuery = `CREATE DATABASE ${process.env.POSTGRES_DATABASE}`;
+
+                await defaultClient.query(createQuery);
+            }
+        } catch(e) {
+            throw new Error(e);
+        } finally {
+            await defaultClient.end();
+        }
     }
 }
 
