@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.module.css';
 import Layout from './components/layout/Layout';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 /**
  * @function App
@@ -21,10 +23,11 @@ const App = () => {
   }, []);
 
   return (
-    <main>
-      <Layout />
-    </main>
-    
+    <Provider store={store}>
+      <main>
+        <Layout />
+      </main>
+    </Provider>
   );
 }
 
