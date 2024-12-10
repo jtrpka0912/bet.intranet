@@ -5,5 +5,4 @@ export type CreateBetModalProps = {
 
 export type CreateBetFormProps = {
   onSuccess: () => void;
-  onError: (error: string) => void;
 }

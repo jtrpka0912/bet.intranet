@@ -94,7 +94,7 @@ const BetList = () => {
  */
 const ListPanel = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
-    const {isLoading, error} = useSelector((state: RootState) => state.bets);
+    const {isRetrieving, retrievingError} = useSelector((state: RootState) => state.bets);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -137,11 +137,11 @@ const ListPanel = () => {
                 onClick={() => setIsCreateOpen(true)} 
             >Create Bet</Button>
 
-            {error ? (
-                <p className={`${S.listMessage} ${S.listError}`}>{error}</p>
+            {retrievingError ? (
+                <p className={`${S.listMessage} ${S.listError}`}>{retrievingError}</p>
             ) : null}
             
-            {isLoading ? (
+            {isRetrieving ? (
                 <p className={S.listMessage}>Retrieving Bets...</p>
             ) : (
                 <BetList />
