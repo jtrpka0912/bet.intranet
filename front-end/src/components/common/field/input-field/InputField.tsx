@@ -30,6 +30,8 @@ const Input = ({
     type,
     name,
     value,
+    min,
+    max,
     onChange
 }: InputProps) => {
     const {id, required} = useInputFieldContext();
@@ -42,6 +44,8 @@ const Input = ({
             value={value}
             required={required ? true : undefined}
             aria-required={required ? true : undefined}
+            min={min ? min : undefined}
+            max={max ? max : undefined}
             onChange={onChange}
         />
     )

@@ -119,6 +119,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
           type="datetime-local"
           name="ends-at"
           value={endsAt}
+          min={`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}T${now.getHours()}:${now.getMinutes() - 1}`}
           onChange={(e) => setEndsAt(e.target.value)}
         />
       </InputField>

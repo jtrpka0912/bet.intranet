@@ -19,6 +19,8 @@ export type InputProps = {
     type: 'text' | 'datetime-local';
     name: string;
     value: string;
+    min?: string;
+    max?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
