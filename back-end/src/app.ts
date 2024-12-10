@@ -1,4 +1,5 @@
 import FastifyServer from './fastify';
+import PostgresClient from './postgres';
 
 /**
  * @async
@@ -10,6 +11,9 @@ const start = async () => {
     FastifyServer.log.info('INFO: Initializing Server');
 
     try {
+        await PostgresClient.ensureDatabaseExists();
+        FastifyServer.log.info('INFO: Bets database exists');
+
         FastifyServer.listen({
             port: parseInt(process.env.SERVER_PORT) ?? 3000,
             host: '0.0.0.0'

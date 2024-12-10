@@ -25,7 +25,7 @@ server.register(BettingRoutes, {
 });
 
 // TODO: Added for IDX debugging
-server.addHook('onRequest', async (request, reply) => {
+server.addHook('onRequest', async (request) => {
   console.log(`Incoming request: ${request.method} ${request.url}`);
 });
 
