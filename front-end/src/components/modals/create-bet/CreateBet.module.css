@@ -1,3 +1,9 @@
+.createBetError {
+  margin-bottom: 1.0rem;
+  color: var(--danger);
+  font-style: italic;
+}
+
 .createBetForm {
   display: flex;
   flex-flow: column nowrap;

@@ -13,7 +13,7 @@ import Button from '../../common/button/Button';
  * @param {CreateBetFormProps} props
  * @returns {JSX.Element}
  */
-const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
+const CreateBetForm = ({onSuccess, onError}: CreateBetFormProps) => {
   const now = new Date();
   const nextDay = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate() + 1}T00:00:00.0`;
 
@@ -35,6 +35,22 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
     e.preventDefault();
 
     try {
+      const possibleErrors = [];
+
+      if(!stipulation.trim()) possibleErrors.push('Stipulation is required');
+      if(!jeremyAnswer.trim()) possibleErrors.push('Jeremy Answer is required');
+      if(!hidemiAnswer.trim()) possibleErrors.push('Hidemi Answer is required');
+      if(!jeremyBets.trim()) possibleErrors.push('Jeremy Bets is required');
+      if(!hidemiBets.trim()) possibleErrors.push('Hidemi Bets is required');
+      if(!endsAt) possibleErrors.push('Ends at date is required');
+
+      if(now.getTime() > new Date(endsAt).getTime()) possibleErrors.push('Ends at must be greater than now');
+
+      if(possibleErrors.length > 0) {
+        onError(possibleErrors[0]);
+        return; // Can't rely on throwing an error
+      }
+
       await createBet({
         stipulation,
         jeremyAnswer,
@@ -47,6 +63,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
       onSuccess();
     } catch(e) {
       console.error(e);
+      onError('Something went wrong');
     }
   }
 
@@ -139,13 +156,18 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
  * @returns {JSX.Element}
  */
 const CreateBetModal = ({isOpen, onClose}: CreateBetModalProps) => {
+  const [error, setError] = React.useState('');
+
   return (
     <Modal 
       title={"Create New Bet"} 
       isOpen={isOpen} 
       onClose={onClose}
     >
-      <CreateBetForm onSuccess={onClose} />
+      {error ? (
+        <p className={S.createBetError}>{error}</p>
+      ) : null}
+      <CreateBetForm onSuccess={onClose} onError={(error) => setError(error)} />
     </Modal>
   );
 };
