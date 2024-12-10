@@ -109,6 +109,9 @@ const ListPanel = () => {
 
     return (
         <Panel>
+            <Button 
+                onClick={() => console.info('Creating Bet')} 
+            >Create Bet</Button>
             <BetList bets={bets} />
         </Panel>
     );
