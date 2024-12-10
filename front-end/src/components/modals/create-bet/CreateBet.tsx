@@ -2,22 +2,71 @@ import React from 'react';
 import S from './CreateBet.module.css';
 import InputField from "../../common/field/input-field/InputField";
 import Modal from "../../common/modal/Modal";
-import CreateBetModalProps from "./CreateBet.types";
+import {CreateBetModalProps, CreateBetFormProps} from "./CreateBet.types";
+import { createBet } from '../../../api/bets';
+import Button from '../../common/button/Button';
 
-const CreateBetForm = () => {
+/**
+ * @function CreateBetForm
+ * @description Create a new bet form
+ * @author J. Trpka
+ * @param {CreateBetFormProps} props
+ * @returns {JSX.Element}
+ */
+const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
   const now = new Date();
+  const nextDay = `${now.getFullYear()}-${now.getMonth()}-${now.getDate() + 1}T00:00:00.0`;
 
   const [stipulation, setStipulation] = React.useState('');
   const [jeremyAnswer, setJeremyAnswer] = React.useState('');
   const [hidemiAnswer, setHidemiAnswer] = React.useState('');
-  const [jeremyBet, setJeremyBet] = React.useState('');
-  const [hidemiBet, setHidemiBet] = React.useState('');
-  const [betEnds, setBetEnds] = React.useState(
-    `${now.getFullYear()}-${now.getMonth()}-${now.getDate() + 1}T00:00:00.0`
-  );
+  const [jeremyBets, setJeremyBets] = React.useState('');
+  const [hidemiBets, setHidemiBets] = React.useState('');
+  const [endsAt, setEndsAt] = React.useState(nextDay);
+
+  /**
+   * @async
+   * @function handleOnSubmit
+   * @description Submit the data to the backend
+   * @event onSubmit
+   * @author J. Trpka
+   */
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await createBet({
+        stipulation,
+        jeremyAnswer,
+        hidemiAnswer,
+        jeremyBets,
+        hidemiBets,
+        endsAt
+      });
+
+      onSuccess();
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  /**
+   * @function handleOnReset
+   * @description Reset the values of the form
+   * @event onReset
+   * @author J. Trpka
+   */
+  const handleOnReset = () => {
+    setStipulation('');
+    setJeremyAnswer('');
+    setHidemiAnswer('');
+    setJeremyBets('');
+    setHidemiBets('');
+    setEndsAt(nextDay);
+  }
 
   return (
-    <form className={S.createBetForm}>
+    <form className={S.createBetForm} onSubmit={(e) => handleOnSubmit(e)} onReset={handleOnReset}>
       <InputField id="stipulation" required={true}>
         <InputField.Label>Stipulation</InputField.Label>
         <InputField.Input 
@@ -46,33 +95,39 @@ const CreateBetForm = () => {
         />
       </InputField>
 
-      <InputField id="jeremy-bet" required={true}>
+      <InputField id="jeremy-bets" required={true}>
         <InputField.Label>Jeremy's Bet</InputField.Label>
         <InputField.TextArea
-          name="jeremy-bet"
-          value={jeremyBet}
-          onChange={(e) => setJeremyBet(e.target.value)}
+          name="jeremy-bets"
+          value={jeremyBets}
+          onChange={(e) => setJeremyBets(e.target.value)}
         />
       </InputField>
 
-      <InputField id="hidemi-bet" required={true}>
+      <InputField id="hidemi-bets" required={true}>
         <InputField.Label>Hidemi's Bet</InputField.Label>
         <InputField.TextArea
-          name="hidemi-bet"
-          value={hidemiBet}
-          onChange={(e) => setHidemiBet(e.target.value)}
+          name="hidemi-bets"
+          value={hidemiBets}
+          onChange={(e) => setHidemiBets(e.target.value)}
         />
       </InputField>
 
-      <InputField id="bet-ends" required={true}>
-        <InputField.Label>Bet Ends</InputField.Label>
+      <InputField id="ends-at" required={true}>
+        <InputField.Label>Ends At</InputField.Label>
         <InputField.Input 
           type="datetime-local"
-          name="bet-ends"
-          value={betEnds}
-          onChange={(e) => setBetEnds(e.target.value)}
+          name="ends-at"
+          value={endsAt}
+          onChange={(e) => setEndsAt(e.target.value)}
         />
       </InputField>
+
+      <div className={S.createBetForm__buttons}>
+        <Button type="submit">Create Bet</Button>
+        <Button type="reset" color="danger">Reset Form</Button>
+      </div>
+      
     </form>
   );
 }
@@ -91,7 +146,7 @@ const CreateBetModal = ({isOpen, onClose}: CreateBetModalProps) => {
       isOpen={isOpen} 
       onClose={onClose}
     >
-      <CreateBetForm />
+      <CreateBetForm onSuccess={onClose} />
     </Modal>
   );
 };

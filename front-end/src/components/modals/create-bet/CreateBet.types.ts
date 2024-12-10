@@ -1,6 +1,8 @@
-type CreateBetModalProps = {
+export type CreateBetModalProps = {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default CreateBetModalProps;
+export type CreateBetFormProps = {
+  onSuccess: () => void;
+}

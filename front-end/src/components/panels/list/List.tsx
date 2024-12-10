@@ -36,6 +36,7 @@ const BetItem = ({
 
                 <div className={S.listItem__buttons}>
                     <Button 
+                        type="button"
                         color="primary"
                         size="small"
                         onClick={() => console.info(bet)}
@@ -43,6 +44,7 @@ const BetItem = ({
 
                     {!bet.completedAt ? (
                         <Button 
+                            type="button"
                             color="secondary"
                             size="small"
                             onClick={() => console.info(bet)}
@@ -119,6 +121,7 @@ const ListPanel = () => {
     return (
         <Panel>
             <Button 
+                type="button"
                 onClick={() => console.info('Creating Bet')} 
             >Create Bet</Button>
             
