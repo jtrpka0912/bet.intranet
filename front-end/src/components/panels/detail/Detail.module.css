@@ -26,6 +26,9 @@
 
 .detailWarning {
   margin-bottom: 1.0rem;
+  padding: 0.5rem;
+  background-color: #000;
+  border-radius: 0.25rem;
   color: var(--warning);
   font-style: italic;
   font-weight: 600;
