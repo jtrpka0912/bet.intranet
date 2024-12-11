@@ -62,22 +62,30 @@ const DetailPanel = () => {
   return (
     <Panel>
       {detail ? (
-        <div>
-          { new Date().getTime() > new Date(detail.endsAt).getTime()  ? (
-            <p className={S.detailWarning}>This bet has ended, please complete to confirm!</p>
-          ) : null}
-          <DetailField label="Stipulation" value={detail.stipulation} />
-          <DetailField label="Jeremy's Answer" value={detail.jeremyAnswer} />
-          <DetailField label="Hidemi's Answer" value={detail.hidemiAnswer} />
-          <DetailField label="Jeremy Bets" value={detail.jeremyBets} />
-          <DetailField label="Hidemi Bets" value={detail.hidemiBets} />
-          <DetailField label="Bet Ends At" value={new Date(detail.endsAt).toLocaleString()} />
-          {detail.completedAt ? (
-            <DetailField label="Completed At" value={new Date(detail.completedAt).toLocaleString()} />
-          ) : null}
-          {detail.completedAt ? (
-            <WinnerField bet={detail} />
-          ) : null}
+        <div className={S.detailPanel}>
+          <section>
+            { new Date().getTime() > new Date(detail.endsAt).getTime()  ? (
+              <p className={S.detailWarning}>This bet has ended, please complete to confirm!</p>
+            ) : null}
+          </section>
+          
+          <section>
+            <DetailField label="Stipulation" value={detail.stipulation} />
+            <DetailField label="Jeremy's Answer" value={detail.jeremyAnswer} />
+            <DetailField label="Hidemi's Answer" value={detail.hidemiAnswer} />
+            <DetailField label="Jeremy Bets" value={detail.jeremyBets} />
+            <DetailField label="Hidemi Bets" value={detail.hidemiBets} />
+            <DetailField label="Bet Ends At" value={new Date(detail.endsAt).toLocaleString()} />
+            {detail.completedAt ? (
+              <DetailField label="Completed At" value={new Date(detail.completedAt).toLocaleString()} />
+            ) : null}
+          </section>
+          
+          <section>
+            {detail.completedAt ? (
+              <WinnerField bet={detail} />
+            ) : null}
+          </section>
         </div>
       ) : (
         <p>Click a bet to show its detail.</p>
