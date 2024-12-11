@@ -168,7 +168,7 @@ const CreateBetModal = ({isOpen, onClose}: CreateBetModalProps) => {
   
   return (
     <Modal 
-      title={"Create New Bet"} 
+      title="Create New Bet"
       isOpen={isOpen} 
       onClose={onClose}
     >
