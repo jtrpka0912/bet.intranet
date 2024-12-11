@@ -100,6 +100,8 @@ export const betsSlice = createSlice({
 
         return bet;
       });
+
+      console.info(bets);
       
       state.bets = bets;
       state.isCompleting = false;

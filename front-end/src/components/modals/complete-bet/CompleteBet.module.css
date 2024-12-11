@@ -8,6 +8,11 @@
     }
   }
 
+  .completeModal__error {
+    color: var(--danger);
+    font-style: italic;
+  }
+
   .completeModal__checkboxes {
     display: flex;
     flex-flow: row nowrap;
