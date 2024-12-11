@@ -10,6 +10,9 @@ export type BetsState = {
   isCreating: boolean;
   creatingError: string;
   detail: BetResponseDTO | null;
+  completing: BetResponseDTO | null;
+  isCompleting: boolean;
+  completingError: string;
 }
 
 const initialState: BetsState = {
@@ -18,7 +21,10 @@ const initialState: BetsState = {
   retrievingError: '',
   isCreating: false,
   creatingError: '',
-  detail: null
+  detail: null,
+  completing: null,
+  isCompleting: false,
+  completingError: ''
 };
 
 export const betsSlice = createSlice({
@@ -63,9 +69,45 @@ export const betsSlice = createSlice({
     // Get Bet Detail
     selectBetDetail: (state, action: PayloadAction<BetResponseDTO>) => {
       state.detail = action.payload;
+      state.completing = null;
     },
     unselectBetDetail: (state) => {
       state.detail = null;
+      state.completing = null;
+    },
+
+    // Selecting a bet to complete
+    selectBetCompletion: (state, action: PayloadAction<BetResponseDTO>) => {
+      state.detail = null;
+      state.completing = action.payload;
+    },
+    unselectBetCompletion: (state) => {
+      state.detail = null;
+      state.completing = null;
+    },
+
+    // Completing a bet
+    processCompletingBet: (state) => {
+      state.isCompleting = true;
+      state.completingError = '';
+    },
+    successCompletingBet: (state, action: PayloadAction<BetResponseDTO>) => {
+      // Swap the old data for new data of updated bet
+      const bets = state.bets.map((bet: BetResponseDTO) => {
+        if(bet.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return bet;
+      });
+      
+      state.bets = bets;
+      state.isCompleting = false;
+      state.completingError = '';
+    },
+    failedCompletingBet: (state, action: PayloadAction<string>) => {
+      state.isCompleting = false;
+      state.completingError = action.payload
     }
   }
 });
