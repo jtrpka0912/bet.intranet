@@ -10,7 +10,8 @@ import Button from '../../common/button/Button';
 import CreateBetModal from '../../modals/create-bet/CreateBet';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../store';
-import { failedRetrievingBets, processRetrievingBets, selectBetDetail, successRetrievingBets } from '../../../reducers/bets';
+import { failedRetrievingBets, processRetrievingBets, selectBetCompletion, selectBetDetail, successRetrievingBets, unselectBetCompletion } from '../../../reducers/bets';
+import CompleteBetModal from '../../modals/complete-bet/CompleteBet';
 
 /**
  * @function BetItem
@@ -32,6 +33,16 @@ const BetItem = ({
      */
     const handleOnClickDetailBet = () => {
         dispatch(selectBetDetail(bet));
+    }
+
+    /**
+     * @function handleOnClickCompleteBet
+     * @description Select the bet to complete
+     * @event onClick
+     * @author J. Trpka
+     */
+    const handleOnClickCompleteBet = () => {
+        dispatch(selectBetCompletion(bet));
     }
 
     return (
@@ -64,7 +75,7 @@ const BetItem = ({
                             type="button"
                             color="secondary"
                             size="small"
-                            onClick={() => console.info(bet)}
+                            onClick={handleOnClickCompleteBet}
                         >Complete</Button>
                     ) : null}
                 </div>
@@ -106,7 +117,7 @@ const BetList = () => {
  */
 const ListPanel = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
-    const {isRetrieving, retrievingError} = useSelector((state: RootState) => state.bets);
+    const {isRetrieving, retrievingError, completing} = useSelector((state: RootState) => state.bets);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -160,6 +171,7 @@ const ListPanel = () => {
             )}
 
             <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
+            <CompleteBetModal isOpen={!!completing} onClose={() => dispatch(unselectBetCompletion())} />
         </Panel>
     );
 };

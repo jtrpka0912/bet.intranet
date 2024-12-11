@@ -120,7 +120,12 @@ export const {
   successCreatingBet,
   failedCreatingBet,
   selectBetDetail,
-  unselectBetDetail
+  unselectBetDetail,
+  selectBetCompletion,
+  unselectBetCompletion,
+  processCompletingBet,
+  successCompletingBet,
+  failedCompletingBet
 } = betsSlice.actions;
 
 export default betsSlice.reducer;
