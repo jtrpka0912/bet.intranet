@@ -251,6 +251,7 @@ export const completeBet = async (request: CompleteBetRequest, reply: FastifyRep
     const updatedResult: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
         `
             SELECT
+                id,
                 stipulation,
                 -- I wish there was a better way to map these properties to the DTO type
                 jeremy_answer AS "jeremyAnswer",
