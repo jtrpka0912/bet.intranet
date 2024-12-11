@@ -63,12 +63,12 @@ const DetailPanel = () => {
     <Panel>
       {detail ? (
         <div className={S.detailPanel}>
-          <section>
-            { new Date().getTime() > new Date(detail.endsAt).getTime()  ? (
+          { new Date().getTime() > new Date(detail.endsAt).getTime()  ? (
+            <section>
               <p className={S.detailWarning}>This bet has ended, please complete to confirm!</p>
-            ) : null}
-          </section>
-          
+            </section>
+          ) : null}
+
           <section>
             <DetailField label="Stipulation" value={detail.stipulation} />
             <DetailField label="Jeremy's Answer" value={detail.jeremyAnswer} />

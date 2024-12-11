@@ -46,6 +46,48 @@ table {
 	border-spacing: 0;
 }
 
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(fonts/nato-sans/NatoSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 400;
+    src: url(fonts/nato-sans/NatoSans-Italic.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    src: url(fonts/nato-sans/NatoSans-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 600;
+    src: url(fonts/nato-sans/NatoSans-SemiBoldItalic.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: url(fonts/nato-sans/NatoSans-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: italic;
+    font-weight: 700;
+    src: url(fonts/nato-sans/NatoSans-BoldItalic.ttf);
+}
+
 :root {
     --darkText: #333;
     --lightText: #ccc;
