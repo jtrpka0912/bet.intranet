@@ -10,7 +10,7 @@ import Button from '../../common/button/Button';
 import CreateBetModal from '../../modals/create-bet/CreateBet';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../store';
-import { failedRetrievingBets, processRetrievingBets, successRetrievingBets } from '../../../reducers/bets';
+import { failedRetrievingBets, processRetrievingBets, selectBetDetail, successRetrievingBets } from '../../../reducers/bets';
 
 /**
  * @function BetItem
@@ -22,6 +22,18 @@ import { failedRetrievingBets, processRetrievingBets, successRetrievingBets } fr
 const BetItem = ({
     bet
 }: BetItemProps) => {
+    const dispatch = useDispatch();
+
+    /**
+     * @function handleOnClickDetailBet
+     * @description Select the bet to show on the detail panel
+     * @event onClick
+     * @author J. Trpka
+     */
+    const handleOnClickDetailBet = () => {
+        dispatch(selectBetDetail(bet));
+    }
+
     return (
         <li className={S.listItem}>
             <h2
@@ -44,7 +56,7 @@ const BetItem = ({
                         type="button"
                         color="primary"
                         size="small"
-                        onClick={() => console.info(bet)}
+                        onClick={handleOnClickDetailBet}
                     >Detail</Button>
 
                     {!bet.completedAt ? (

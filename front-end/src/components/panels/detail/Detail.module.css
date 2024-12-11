@@ -1,0 +1,32 @@
+.detailPanel {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.detailField {
+  margin-bottom: 2.0rem;
+
+  dt {
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+
+  dd {
+    margin-top: 0.75rem;
+    font-size: 1.2em;
+  }
+}
+
+.winnerField {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.detailWarning {
+  margin-bottom: 1.0rem;
+  color: var(--warning);
+  font-style: italic;
+  font-weight: 600;
+}

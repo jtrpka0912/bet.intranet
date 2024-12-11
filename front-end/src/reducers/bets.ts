@@ -9,6 +9,7 @@ export type BetsState = {
   retrievingError: string;
   isCreating: boolean;
   creatingError: string;
+  detail: BetResponseDTO | null;
 }
 
 const initialState: BetsState = {
@@ -16,7 +17,8 @@ const initialState: BetsState = {
   isRetrieving: false,
   retrievingError: '',
   isCreating: false,
-  creatingError: ''
+  creatingError: '',
+  detail: null
 };
 
 export const betsSlice = createSlice({
@@ -56,6 +58,14 @@ export const betsSlice = createSlice({
     failedCreatingBet: (state, action: PayloadAction<string>) => {
       state.isCreating = false;
       state.creatingError = action.payload;
+    },
+
+    // Get Bet Detail
+    selectBetDetail: (state, action: PayloadAction<BetResponseDTO>) => {
+      state.detail = action.payload;
+    },
+    unselectBetDetail: (state) => {
+      state.detail = null;
     }
   }
 });
@@ -66,7 +76,9 @@ export const {
   failedRetrievingBets,
   processCreatingBet,
   successCreatingBet,
-  failedCreatingBet
+  failedCreatingBet,
+  selectBetDetail,
+  unselectBetDetail
 } = betsSlice.actions;
 
 export default betsSlice.reducer;
