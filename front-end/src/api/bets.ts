@@ -19,9 +19,7 @@ const STATUS_CREATED = 201;
  * @returns {Promise<ResponseDTO<PaginationResponseDTO<BetResponseDTO>>>} 
  */
 export const retrieveBets = async (page: number = 0, limit: number = 20): Promise<ResponseDTO<PaginationResponseDTO<BetResponseDTO>>> => {
-    const response: Response = await fetch(`${URL}/api/v1/bets?page=${page}&limit=${limit}`, {
-        credentials: 'include'
-    });
+    const response: Response = await fetch(`${URL}/api/v1/bets?page=${page}&limit=${limit}`);
 
     const json: ResponseDTO<PaginationResponseDTO<BetResponseDTO>> = await response.json();
 
@@ -31,13 +29,6 @@ export const retrieveBets = async (page: number = 0, limit: number = 20): Promis
 
     return json;
 }
-
-/**
- * curl -X https://3000-idx-makeabet-1730228503135.cluster-pgviq6mvsncnqxx6kr7pbz65v6.cloudworkstations.dev/api/resource \
-  -H "Origin: https://5173-idx-makeabet-1730228503135.cluster-pgviq6mvsncnqxx6kr7pbz65v6.cloudworkstations.dev" \
-  -H "Access-Control-Request-Method: POST" \
-  -H "Access-Control-Request-Headers: Content-Type"
- */
 
 /**
  * @function createBet
@@ -50,7 +41,6 @@ export const createBet = async (bet: CreateBetRequestBodyDTO): Promise<ResponseD
     const response: Response = await fetch(`${URL}/api/v1/bets`, {
         method: 'POST',
         body: JSON.stringify(bet),
-        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
