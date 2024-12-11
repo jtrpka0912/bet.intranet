@@ -74,4 +74,8 @@
     display: flex;
     flex-flow: column nowrap;
     container-type: inline-size;
+    height: 95%;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--nightSnow) var(--cloudless);
 }
