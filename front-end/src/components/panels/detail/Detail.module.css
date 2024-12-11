@@ -12,6 +12,11 @@
   }
 }
 
+.winnerField {
+  font-size: 1.5em;
+  text-align: center;
+}
+
 .detailWarning {
   margin-bottom: 1.0rem;
   color: var(--warning);

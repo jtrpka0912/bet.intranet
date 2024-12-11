@@ -2,7 +2,37 @@ import S from './Detail.module.css';
 import { useSelector } from "react-redux";
 import Panel from "../../common/panel/Panel";
 import { RootState } from "../../../store";
-import { DetailFieldProps } from "./Detail.types";
+import { DetailFieldProps, WinnerFieldProps } from "./Detail.types";
+
+/**
+ * @function WinnerField
+ * @description Show the winner, if any, for the bet
+ * @author J. Trpka
+ * @param {WinnerFieldProps} props
+ * @returns {JSX.Element}
+ */
+const WinnerField = ({bet}: WinnerFieldProps) => {
+
+  /**
+   * @function wonMessage
+   * @description A paragraph component that shows the winning, if any, message.
+   * @author J. Trpka
+   * @returns {string}
+   */
+  const wonMessage = (): string => {
+    if(bet.jeremyWon && bet.hidemiWon) return 'Both Hidemi and Jeremy won the bet!';
+    if(bet.jeremyWon) return 'Jeremy won the bet!';
+    if(bet.hidemiWon) return 'Hidemi won the bet!';
+
+    return 'No one won the bet!';
+  }
+
+  return (
+    <div className={S.winnerField}>
+      <p>{wonMessage()}</p>
+    </div>
+  )
+};
 
 /**
  * @function DetailField
@@ -24,7 +54,6 @@ const DetailField = ({label, value}: DetailFieldProps) => {
  * @function DetailPanel
  * @description Show the information of a bet
  * @author J. Trpka
- * @param {DetailPanelProps} props
  * @returns {JSX.Element}
  */
 const DetailPanel = () => {
@@ -43,6 +72,12 @@ const DetailPanel = () => {
           <DetailField label="Jeremy Bets" value={detail.jeremyBets} />
           <DetailField label="Hidemi Bets" value={detail.hidemiBets} />
           <DetailField label="Bet Ends At" value={new Date(detail.endsAt).toLocaleString()} />
+          {detail.completedAt ? (
+            <DetailField label="Completed At" value={new Date(detail.completedAt).toLocaleString()} />
+          ) : null}
+          {detail.completedAt ? (
+            <WinnerField bet={detail} />
+          ) : null}
         </div>
       ) : (
         <p>Click a bet to show its detail.</p>
