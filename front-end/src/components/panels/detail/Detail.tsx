@@ -63,7 +63,7 @@ const DetailPanel = () => {
     <Panel>
       {detail ? (
         <div className={S.detailPanel}>
-          { new Date().getTime() > new Date(detail.endsAt).getTime()  ? (
+          { (new Date().getTime() > new Date(detail.endsAt).getTime()) && !detail.completedAt ? (
             <section>
               <p className={S.detailWarning}>This bet has ended, please complete to confirm!</p>
             </section>
