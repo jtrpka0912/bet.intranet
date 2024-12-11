@@ -1,5 +1,6 @@
-import Panel from "../../common/panel/Panel"
-import { DetailPanelProps } from "./Detail.types"
+import { useSelector } from "react-redux";
+import Panel from "../../common/panel/Panel";
+import { RootState } from "../../../store";
 
 /**
  * @function DetailPanel
@@ -8,11 +9,13 @@ import { DetailPanelProps } from "./Detail.types"
  * @param {DetailPanelProps} props
  * @returns {JSX.Element}
  */
-const DetailPanel = ({bet}: DetailPanelProps) => {
+const DetailPanel = () => {
+  const {detail} = useSelector((store: RootState) => store.bets);
+
   return (
     <Panel>
-      {bet ? (
-        <p>Show new props</p>
+      {detail ? (
+        <p>{detail.id}</p>
       ) : (
         <p>Click a bet to show its detail.</p>
       )}
