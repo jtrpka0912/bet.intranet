@@ -117,7 +117,7 @@ const BetList = () => {
  */
 const ListPanel = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
-    const {isRetrieving, retrievingError, completing} = useSelector((state: RootState) => state.bets);
+    const {isRetrieving, retrievingError, completing, currentPage, itemsPerPage} = useSelector((state: RootState) => state.bets);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -133,7 +133,7 @@ const ListPanel = () => {
      * @param {number} page 
      * @param {number} limit 
      */
-    const retrievePaginatedBets = async (page: number = 0, limit: number = 20) => {
+    const retrievePaginatedBets = async (page: number = currentPage, limit: number = itemsPerPage) => {
         try {
             dispatch(processRetrievingBets());
             const response: ResponseDTO<PaginationResponseDTO<BetResponseDTO>> = await retrieveBets(page, limit);

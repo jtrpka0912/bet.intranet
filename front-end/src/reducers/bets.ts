@@ -13,6 +13,10 @@ export type BetsState = {
   completing: BetResponseDTO | null;
   isCompleting: boolean;
   completingError: string;
+  currentPage: number;
+  noPages: number;
+  itemsPerPage: number;
+  totalItems: number;
 }
 
 const initialState: BetsState = {
@@ -24,7 +28,11 @@ const initialState: BetsState = {
   detail: null,
   completing: null,
   isCompleting: false,
-  completingError: ''
+  completingError: '',
+  currentPage: 0,
+  noPages: 0,
+  itemsPerPage: 10,
+  totalItems: 0
 };
 
 export const betsSlice = createSlice({
