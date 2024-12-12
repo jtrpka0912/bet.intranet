@@ -43,6 +43,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
 
     try {
       const possibleErrors: string[] = [];
+      const endsAtDate = new Date(endsAt);
 
       if(!stipulation.trim()) possibleErrors.push('Stipulation is required');
       if(!jeremyAnswer.trim()) possibleErrors.push('Jeremy Answer is required');
@@ -51,7 +52,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
       if(!hidemiBets.trim()) possibleErrors.push('Hidemi Bets is required');
       if(!endsAt) possibleErrors.push('Ends at date is required');
 
-      if(now.getTime() > new Date(endsAt).getTime()) possibleErrors.push('Ends at must be greater than now');
+      if(now.getTime() > endsAtDate.getTime()) possibleErrors.push('Ends at must be greater than now');
 
       if(possibleErrors.length > 0) {
         dispatch(failedCreatingBet(possibleErrors[0]));
@@ -64,7 +65,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
         hidemiAnswer,
         jeremyBets,
         hidemiBets,
-        endsAt
+        endsAt: endsAtDate.toISOString()
       });
 
       dispatch(successCreatingBet(response.data));
