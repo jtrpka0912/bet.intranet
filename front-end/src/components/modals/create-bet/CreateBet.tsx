@@ -69,6 +69,7 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
       });
 
       dispatch(successCreatingBet(response.data));
+      resetForm();
       onSuccess();
     } catch(e) {
       console.error(e);
@@ -77,18 +78,27 @@ const CreateBetForm = ({onSuccess}: CreateBetFormProps) => {
   }
 
   /**
-   * @function handleOnReset
-   * @description Reset the values of the form
-   * @event onReset
+   * @function resetForm
+   * @description Reset the values for the form
    * @author J. Trpka
    */
-  const handleOnReset = () => {
+  const resetForm = () => {
     setStipulation('');
     setJeremyAnswer('');
     setHidemiAnswer('');
     setJeremyBets('');
     setHidemiBets('');
     setEndsAt(nextDay);
+  }
+
+  /**
+   * @function handleOnReset
+   * @description Reset the values of the form if the form had a reset command
+   * @event onReset
+   * @author J. Trpka
+   */
+  const handleOnReset = () => {
+    resetForm();
   }
 
   return (
