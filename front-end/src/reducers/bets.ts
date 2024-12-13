@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import BetResponseDTO from "../dto/bet-response";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { PaginatePayloadAction } from "../components/panels/list/List.types";
 
 export type BetsState = {
   bets: BetResponseDTO[];
@@ -13,6 +14,10 @@ export type BetsState = {
   completing: BetResponseDTO | null;
   isCompleting: boolean;
   completingError: string;
+  currentPage: number;
+  totalPages: number;
+  limit: number;
+  totalItems: number;
 }
 
 const initialState: BetsState = {
@@ -24,7 +29,11 @@ const initialState: BetsState = {
   detail: null,
   completing: null,
   isCompleting: false,
-  completingError: ''
+  completingError: '',
+  currentPage: 0,
+  totalPages: 0,
+  limit: 10,
+  totalItems: 0
 };
 
 export const betsSlice = createSlice({
@@ -100,8 +109,6 @@ export const betsSlice = createSlice({
 
         return bet;
       });
-
-      console.info(bets);
       
       state.bets = bets;
       state.isCompleting = false;
@@ -110,6 +117,16 @@ export const betsSlice = createSlice({
     failedCompletingBet: (state, action: PayloadAction<string>) => {
       state.isCompleting = false;
       state.completingError = action.payload
+    },
+
+    // Pagination
+    paginate: (state, action: PayloadAction<PaginatePayloadAction>) => {
+      const payload: PaginatePayloadAction = action.payload;
+
+      state.currentPage = payload.currentPage;
+      state.totalPages = payload.totalPages;
+      state.limit = payload.limit;
+      state.totalItems = payload.totalItems;
     }
   }
 });
@@ -127,7 +144,8 @@ export const {
   unselectBetCompletion,
   processCompletingBet,
   successCompletingBet,
-  failedCompletingBet
+  failedCompletingBet,
+  paginate
 } = betsSlice.actions;
 
 export default betsSlice.reducer;
