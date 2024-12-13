@@ -162,6 +162,17 @@ const ListPanel = () => {
         }
     }
 
+    /**
+     * @async
+     * @function handleOnPaginate
+     * @description Set the new page for retrieving bets
+     * @author J. Trpka
+     * @param {number} newPage
+     */
+    const handleOnPaginate = async (newPage: number) => {
+        await retrievePaginatedBets(newPage);
+    }
+
     return (
         <Panel>
             <Button 
@@ -183,6 +194,7 @@ const ListPanel = () => {
                 totalItems={betState.totalItems} 
                 currentPage={betState.currentPage}
                 totalPages={betState.totalPages}
+                onPaginate={handleOnPaginate}
             />
 
             <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />

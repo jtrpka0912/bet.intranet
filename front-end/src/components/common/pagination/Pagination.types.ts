@@ -3,4 +3,5 @@ export type PaginationProps = {
   currentPage: number;
   totalPages: number;
   numbers?: boolean;
+  onPaginate: (page: number) => void
 }
