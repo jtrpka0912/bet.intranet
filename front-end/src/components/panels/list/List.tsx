@@ -10,8 +10,9 @@ import Button from '../../common/button/Button';
 import CreateBetModal from '../../modals/create-bet/CreateBet';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../store';
-import { failedRetrievingBets, processRetrievingBets, selectBetCompletion, selectBetDetail, successRetrievingBets, unselectBetCompletion } from '../../../reducers/bets';
+import { failedRetrievingBets, paginate, processRetrievingBets, selectBetCompletion, selectBetDetail, successRetrievingBets, unselectBetCompletion } from '../../../reducers/bets';
 import CompleteBetModal from '../../modals/complete-bet/CompleteBet';
+import Pagination from '../../common/pagination/Pagination';
 
 /**
  * @function BetItem
@@ -117,7 +118,8 @@ const BetList = () => {
  */
 const ListPanel = () => {
     const [isCreateOpen, setIsCreateOpen] = React.useState<boolean>(false);
-    const {isRetrieving, retrievingError, completing, currentPage, itemsPerPage} = useSelector((state: RootState) => state.bets);
+
+    const betState = useSelector((state: RootState) => state.bets);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -133,10 +135,12 @@ const ListPanel = () => {
      * @param {number} page 
      * @param {number} limit 
      */
-    const retrievePaginatedBets = async (page: number = currentPage, limit: number = itemsPerPage) => {
+    const retrievePaginatedBets = async (page: number = betState.currentPage, limit: number = betState.limit) => {
         try {
             dispatch(processRetrievingBets());
             const response: ResponseDTO<PaginationResponseDTO<BetResponseDTO>> = await retrieveBets(page, limit);
+
+            console.info(response);
 
             const betItems = response.data.items;
             dispatch(successRetrievingBets(response.data.items));
@@ -146,7 +150,12 @@ const ListPanel = () => {
                 setIsCreateOpen(true);
             }
 
-            // TODO: Take care of the pagination data later.
+            dispatch(paginate({
+                totalItems: response.data.count,
+                limit: response.data.limit,
+                currentPage: response.data.page,
+                totalPages: response.data.pages
+            }));
         } catch(e) {
             dispatch(failedRetrievingBets('Something happened retrieving the bets'));
             console.error(e);
@@ -160,18 +169,24 @@ const ListPanel = () => {
                 onClick={() => setIsCreateOpen(true)} 
             >Create Bet</Button>
 
-            {retrievingError ? (
-                <p className={`${S.listMessage} ${S.listError}`}>{retrievingError}</p>
+            {betState.retrievingError ? (
+                <p className={`${S.listMessage} ${S.listError}`}>{betState.retrievingError}</p>
             ) : null}
             
-            {isRetrieving ? (
+            {betState.isRetrieving ? (
                 <p className={S.listMessage}>Retrieving Bets...</p>
             ) : (
                 <BetList />
             )}
 
+            <Pagination 
+                totalItems={betState.totalItems} 
+                currentPage={betState.currentPage}
+                totalPages={betState.totalPages}
+            />
+
             <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
-            <CompleteBetModal isOpen={!!completing} onClose={() => dispatch(unselectBetCompletion())} />
+            <CompleteBetModal isOpen={!!betState.completing} onClose={() => dispatch(unselectBetCompletion())} />
         </Panel>
     );
 };
