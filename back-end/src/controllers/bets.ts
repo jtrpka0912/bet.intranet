@@ -30,6 +30,8 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
         `SELECT COUNT(id) AS count FROM bets`
     );
 
+    const offset: string = (parseInt(limit) * parseInt(page)).toString();
+
     // Retrieve a paginated set of bets
     const result: QueryResult<BetResponseDTO> = await request.server.dbClient.query(
         `SELECT 
@@ -47,7 +49,7 @@ export const retrieveBets = async (request: FastifyRequest, reply: FastifyReply)
         FROM bets
         ORDER BY created_at DESC
         LIMIT $1 OFFSET $2`,
-        [limit, page]
+        [limit, offset]
     );
 
     const count: number = parseInt(countResult.rows[0].count);
