@@ -11,7 +11,7 @@ const server: FastifyInstance = fastify({
 server.register(postgresClientPlugin);
 
 server.register(cors, {
-    origin: 'http://localhost:5173', // TODO: Add a new environment variable for front-end port
+    origin: process.env.FRONTEND_HOST,
     methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 });
