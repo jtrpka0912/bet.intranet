@@ -79,3 +79,10 @@
     scrollbar-width: thin;
     scrollbar-color: var(--nightSnow) var(--cloudless);
 }
+
+.listPanel {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: 100%;
+}

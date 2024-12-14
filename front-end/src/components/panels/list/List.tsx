@@ -174,32 +174,39 @@ const ListPanel = () => {
     }
 
     return (
-        <Panel>
-            <Button 
-                type="button"
-                onClick={() => setIsCreateOpen(true)} 
-            >Create Bet</Button>
+        <React.Fragment>
+            <Panel>
+                <div className={S.listPanel}>
+                    <div>
+                        <Button 
+                            type="button"
+                            onClick={() => setIsCreateOpen(true)} 
+                        >Create Bet</Button>
 
-            {betState.retrievingError ? (
-                <p className={`${S.listMessage} ${S.listError}`}>{betState.retrievingError}</p>
-            ) : null}
-            
-            {betState.isRetrieving ? (
-                <p className={S.listMessage}>Retrieving Bets...</p>
-            ) : (
-                <BetList />
-            )}
-
-            <Pagination 
-                totalItems={betState.totalItems} 
-                currentPage={betState.currentPage}
-                totalPages={betState.totalPages}
-                onPaginate={handleOnPaginate}
-            />
+                        {betState.retrievingError ? (
+                            <p className={`${S.listMessage} ${S.listError}`}>{betState.retrievingError}</p>
+                        ) : null}
+                        
+                        {betState.isRetrieving ? (
+                            <p className={S.listMessage}>Retrieving Bets...</p>
+                        ) : (
+                            <BetList />
+                        )}
+                    </div>
+                    
+                    <Pagination 
+                        totalItems={betState.totalItems} 
+                        currentPage={betState.currentPage}
+                        totalPages={betState.totalPages}
+                        onPaginate={handleOnPaginate}
+                    />
+                </div>
+            </Panel>
 
             <CreateBetModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
             <CompleteBetModal isOpen={!!betState.completing} onClose={() => dispatch(unselectBetCompletion())} />
-        </Panel>
+        </React.Fragment>
+        
     );
 };
 

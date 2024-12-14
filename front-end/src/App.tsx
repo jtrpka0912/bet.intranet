@@ -1,4 +1,4 @@
-import './App.module.css';
+import './App.css';
 import Layout from './components/layout/Layout';
 import { Provider } from 'react-redux';
 import { store } from './store';
@@ -12,9 +12,7 @@ import { store } from './store';
 const App = () => {
   return (
     <Provider store={store}>
-      <main>
-        <Layout />
-      </main>
+      <Layout />
     </Provider>
   );
 }
