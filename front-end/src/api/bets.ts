@@ -4,8 +4,7 @@ import CreateBetRequestBodyDTO from "../dto/create-bet-request-body";
 import PaginationResponseDTO from "../dto/pagination-response";
 import ResponseDTO from "../dto/response";
 
-// TODO: Change the URL after project is moved out of IDX
-const URL = 'http://localhost:3000';
+const URL = import.meta.env.VITE_BACKEND_HOST;
 const STATUS_OK = 200;
 const STATUS_CREATED = 201;
 
