@@ -50,42 +50,42 @@ table {
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 400;
-    src: url(fonts/nato-sans/NatoSans-Regular.ttf);
+    src: url(/fonts/noto-sans/NotoSans-Regular.ttf);
 }
 
 @font-face {
     font-family: 'Noto Sans';
     font-style: italic;
     font-weight: 400;
-    src: url(fonts/nato-sans/NatoSans-Italic.ttf);
+    src: url(/fonts/noto-sans/NotoSans-Italic.ttf);
 }
 
 @font-face {
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 600;
-    src: url(fonts/nato-sans/NatoSans-SemiBold.ttf);
+    src: url(/fonts/noto-sans/NotoSans-SemiBold.ttf);
 }
 
 @font-face {
     font-family: 'Noto Sans';
     font-style: italic;
     font-weight: 600;
-    src: url(fonts/nato-sans/NatoSans-SemiBoldItalic.ttf);
+    src: url(/fonts/noto-sans/NotoSans-SemiBoldItalic.ttf);
 }
 
 @font-face {
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 700;
-    src: url(fonts/nato-sans/NatoSans-Bold.ttf);
+    src: url(/fonts/noto-sans/NotoSans-Bold.ttf);
 }
 
 @font-face {
     font-family: 'Noto Sans';
     font-style: italic;
     font-weight: 700;
-    src: url(fonts/nato-sans/NatoSans-BoldItalic.ttf);
+    src: url(/fonts/noto-sans/NotoSans-BoldItalic.ttf);
 }
 
 :root {
